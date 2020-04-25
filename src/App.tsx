@@ -7,21 +7,41 @@ import Cabinet from './views/Cabinet';
 import Groups from './views/Groups';
 import University from './views/University';
 import Header from './components/Header';
+import { useSelector } from './store/store';
 import './App.css';
 
 const App: React.FC = () => {
+  const isLogin = useSelector((state) => state.auth.loggedIn);
+
   return (
-    <Router>
-      <Header />
-      <Switch>
-        <Route path="/" exact component={Landing} />
-        <Route path="/cabinet" component={Cabinet} />
-        <Route path="/students" component={Students} />
-        <Route path="/groups" component={Groups} />
-        <Route path="/university" component={University} />
-        <Redirect from="*" exact to="/" />
-      </Switch>
-    </Router>
+    <>
+      <Router>
+        <Header />
+        <Switch>
+          {/* restricted routes */}
+          {isLogin ? (
+            <>
+              <Redirect exact from="/" to="/cabinet" />
+            </>
+          ) : (
+            <Route path="/" exact component={Landing} />
+          )}
+
+          {/* private routes */}
+          {isLogin ? (
+            <>
+              <Route exact path="/cabinet" component={Cabinet} />
+              <Route exact path="/groups" component={Groups} />
+              <Route exact path="/students" component={Students} />
+              <Route exact path="/university" component={University} />
+            </>
+          ) : (
+            <Redirect to="/" />
+          )}
+          <Redirect to="/" />
+        </Switch>
+      </Router>
+    </>
   );
 };
 

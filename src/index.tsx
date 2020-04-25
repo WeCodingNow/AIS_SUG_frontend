@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import App from './App';
-import store from './store/store';
+import { store } from './store/store';
 import './index.css';
 
 declare global {
