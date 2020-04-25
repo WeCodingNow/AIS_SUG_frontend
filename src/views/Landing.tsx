@@ -1,13 +1,13 @@
 import React from 'react';
-
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
-import './Landing.scss';
 import { Controller, useForm } from 'react-hook-form';
+
+import './Landing.scss';
 
 const Landing: React.FC = () => {
   const methods = useForm();

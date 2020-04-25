@@ -1,10 +1,10 @@
 import React from 'react';
-import './Header.scss';
 
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { LinkContainer } from 'react-router-bootstrap';
+import './Header.scss';
 
 const Header: React.FC = () => (
   <Navbar bg="dark" variant="dark" sticky="top">

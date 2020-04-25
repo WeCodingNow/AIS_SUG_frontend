@@ -1,13 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Store } from 'redux';
 import { Provider } from 'react-redux';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-import './index.css';
 import App from './App';
 import store from './store/store';
-
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Store } from 'redux';
+import './index.css';
 
 declare global {
   interface Window {
