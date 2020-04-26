@@ -6,12 +6,32 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import { Controller, useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 
+import { login, signUp } from '../store/auth/actions';
 import './Landing.scss';
 
+type LoginFormData = {
+  username: string;
+  password: string;
+};
+
 const Landing: React.FC = () => {
-  const methods = useForm();
+  const methods = useForm<LoginFormData>();
   const control = methods.control;
+  const dispatch = useDispatch();
+
+  const loginHandler = (): void => {
+    const { username, password } = control.getValues();
+
+    dispatch(login(username, password));
+  };
+
+  const signupHandler = (): void => {
+    const { username, password } = control.getValues();
+
+    dispatch(signUp(username, password));
+  };
 
   return (
     <Container fluid className="filler-with-header">
@@ -45,8 +65,8 @@ const Landing: React.FC = () => {
                 </Form>
               </div>
               <ButtonToolbar aria-label="Toolbar with button groups" className="login-button-bar">
-                <Button onClick={(): void => console.log(control.getValues())}>Вход</Button>
-                <Button>Регистрация</Button>
+                <Button onClick={loginHandler}>Вход</Button>
+                <Button onClick={signupHandler}>Регистрация</Button>
               </ButtonToolbar>
             </Col>
           </Row>

@@ -1,14 +1,20 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { LinkContainer } from 'react-router-bootstrap';
 
 import { useSelector } from '../store/store';
+import { logout } from '../store/auth/actions';
 import './Header.scss';
 
 const Header: React.FC = () => {
   const loggedIn = useSelector((state) => state.auth.loggedIn);
+  const dispatch = useDispatch();
+  const logOutHandler = () => {
+    dispatch(logout());
+  };
 
   return (
     <Navbar bg="dark" variant="dark" sticky="top">
@@ -30,9 +36,9 @@ const Header: React.FC = () => {
             </LinkContainer>
           </Nav>
           <NavDropdown title="Личный кабинет" id="basic-nav-dropdown">
-            <NavDropdown.Item href="cabinet">Открыть</NavDropdown.Item>
+            <NavDropdown.Item href="/cabinet">Открыть</NavDropdown.Item>
             <NavDropdown.Divider />
-            <NavDropdown.Item href="logout">Выйти</NavDropdown.Item>
+            <NavDropdown.Item onClick={logOutHandler}>Выйти</NavDropdown.Item>
           </NavDropdown>
         </Navbar.Collapse>
       ) : (

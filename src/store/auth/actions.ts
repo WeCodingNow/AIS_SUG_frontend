@@ -1,21 +1,23 @@
-import { LoginInfo, AuthActionTypes, TRY_LOGIN, TRY_LOGOUT, TRY_SIGNUP } from './types';
+import { LoginInfo, AuthActionTypes, LOGOUT, LOGIN_SUCCESS, SIGNUP_SUCCESS } from './types';
 
-export function tryLogin(loginInfo: LoginInfo): AuthActionTypes {
+export function loginSuccess(loginInfo: LoginInfo): AuthActionTypes {
   return {
-    type: TRY_LOGIN,
+    type: LOGIN_SUCCESS,
     payload: loginInfo,
   };
 }
 
-export function trySignup(loginInfo: LoginInfo): AuthActionTypes {
+export function signupSuccess(loginInfo: LoginInfo): AuthActionTypes {
   return {
-    type: TRY_SIGNUP,
+    type: SIGNUP_SUCCESS,
     payload: loginInfo,
   };
 }
 
-export function tryLogout(): AuthActionTypes {
+export function logout(): AuthActionTypes {
   return {
-    type: TRY_LOGOUT,
+    type: LOGOUT,
   };
 }
+
+export { login, signUp } from './thunks';

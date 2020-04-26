@@ -1,9 +1,9 @@
-import { AuthState, AuthActionTypes, TRY_LOGOUT, LOGIN_SUCCESS, SIGNUP_SUCCESS } from './types';
+import { AuthState, AuthActionTypes, LOGOUT, LOGIN_SUCCESS } from './types';
 
 const initialState: AuthState = {
   loggedIn: false,
-  username: '',
-  token: '',
+  username: undefined,
+  token: undefined,
 };
 
 function authReducer(state: AuthState = initialState, action: AuthActionTypes): AuthState {
@@ -11,16 +11,10 @@ function authReducer(state: AuthState = initialState, action: AuthActionTypes): 
     case LOGIN_SUCCESS:
       return {
         loggedIn: true,
-        username: 'username',
-        token: '123456',
+        username: action.payload.username,
+        token: action.payload.token,
       };
-    case SIGNUP_SUCCESS:
-      return {
-        loggedIn: true,
-        username: 'username',
-        token: '123456',
-      };
-    case TRY_LOGOUT:
+    case LOGOUT:
       return initialState;
     default:
       return state;

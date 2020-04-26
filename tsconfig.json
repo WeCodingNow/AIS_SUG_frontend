@@ -19,7 +19,7 @@
     "noEmit": true,
     "jsx": "react",
     "sourceMap": true,
-    "declaration": true,
+    // "declaration": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
