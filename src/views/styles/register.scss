@@ -1,0 +1,12 @@
+@import 'views.scss';
+
+$margin-top-value: 2em;
+
+.register-view {
+  @include view;
+
+  .content {
+    margin: $margin-top-value 0 0;
+    height: calc(100% - #{$margin-top-value});
+  }
+}

@@ -5,11 +5,13 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
+import { LinkContainer } from 'react-router-bootstrap';
 import { Controller, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 
-import { login, signUp } from '../store/auth/actions';
-import './Landing.scss';
+import { login } from '../store/auth/actions';
+
+import './styles/landing.scss';
 
 type LoginFormData = {
   username: string;
@@ -27,49 +29,38 @@ const Landing: React.FC = () => {
     dispatch(login(username, password));
   };
 
-  const signupHandler = (): void => {
-    const { username, password } = control.getValues();
-
-    dispatch(signUp(username, password));
-  };
-
   return (
-    <Container fluid className="filler-with-header">
-      <Row className="filler bowman-background">
-        <Col xs={8}></Col>
-        <Col className="filler">
-          <Row className="filler">
-            <Col className="filler login-col">
-              <div className="form-from-top">
-                <Form>
-                  <Form.Group controlId="formBasicUsername">
-                    <Form.Label>Логин</Form.Label>
-                    <Controller
-                      as={<Form.Control type="text" required />}
-                      control={control}
-                      name="username"
-                      rules={{ required: true }}
-                      defaultValue=""
-                    />
-                  </Form.Group>
-                  <Form.Group controlId="formBasicPassword">
-                    <Form.Label>Пароль</Form.Label>
-                    <Controller
-                      as={<Form.Control type="password" required />}
-                      control={control}
-                      name="password"
-                      rules={{ required: true }}
-                      defaultValue=""
-                    />
-                  </Form.Group>
-                </Form>
-              </div>
-              <ButtonToolbar aria-label="Toolbar with button groups" className="login-button-bar">
-                <Button onClick={loginHandler}>Вход</Button>
-                <Button onClick={signupHandler}>Регистрация</Button>
-              </ButtonToolbar>
-            </Col>
-          </Row>
+    <Container fluid className="landing-view">
+      <Row className="content">
+        <Col className="login offset-md-8">
+          <Form className="login__form">
+            <Form.Group controlId="formBasicUsername">
+              <Form.Label>Логин</Form.Label>
+              <Controller
+                as={<Form.Control type="text" required />}
+                control={control}
+                name="username"
+                rules={{ required: true }}
+                defaultValue=""
+              />
+            </Form.Group>
+            <Form.Group controlId="formBasicPassword">
+              <Form.Label>Пароль</Form.Label>
+              <Controller
+                as={<Form.Control type="password" required />}
+                control={control}
+                name="password"
+                rules={{ required: true }}
+                defaultValue=""
+              />
+            </Form.Group>
+          </Form>
+          <ButtonToolbar aria-label="Toolbar with button groups" className="login-button-bar">
+            <Button onClick={loginHandler}>Вход</Button>
+            <LinkContainer to="/register">
+              <Button>Регистрация</Button>
+            </LinkContainer>
+          </ButtonToolbar>
         </Col>
       </Row>
     </Container>

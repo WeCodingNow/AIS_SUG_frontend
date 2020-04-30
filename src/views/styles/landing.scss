@@ -1,0 +1,28 @@
+@import 'views.scss';
+
+.landing-view {
+  @include view;
+
+  .btn-toolbar.login-button-bar {
+    justify-content: space-evenly;
+  }
+
+  .login {
+    height: 100%;
+    background-color: #00000044;
+    color: #e2d1d1;
+
+    .login__form {
+      margin-top: 2em;
+    }
+  }
+
+  .content {
+    height: 100%;
+    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('./bkgr.jpg');
+    -webkit-background-size: cover;
+    -moz-background-size:  cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+}

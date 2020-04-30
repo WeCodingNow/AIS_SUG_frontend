@@ -7,7 +7,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 
 import { useSelector } from '../store/store';
 import { logout } from '../store/auth/actions';
-import './Header.scss';
+import './styles/header.scss';
 
 const Header: React.FC = () => {
   const loggedIn = useSelector((state) => state.auth.loggedIn);

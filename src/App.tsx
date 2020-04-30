@@ -9,6 +9,7 @@ import University from './views/University';
 import Header from './components/Header';
 import { useSelector } from './store/store';
 import './App.css';
+import Registration from './views/Register';
 
 // type AuthProps = {
 //   login: boolean;
@@ -23,19 +24,18 @@ const App: React.FC = () => {
   const isLogin = useSelector((state) => state.auth.loggedIn);
 
   return (
-    <>
-      <Router>
-        <Header />
-        <Switch>
-          <Route exact path="/" component={() => (isLogin ? <Redirect to="/cabinet" /> : <Landing />)} />
-          <Route exact path="/cabinet" component={() => (isLogin ? <Cabinet /> : <Redirect to="/" />)} />
-          <Route exact path="/groups" component={() => (isLogin ? <Groups /> : <Redirect to="/" />)} />
-          <Route exact path="/students" component={() => (isLogin ? <Students /> : <Redirect to="/" />)} />
-          <Route exact path="/university" component={() => (isLogin ? <University /> : <Redirect to="/" />)} />
-          <Redirect to="/" />
-        </Switch>
-      </Router>
-    </>
+    <Router>
+      <Header />
+      <Switch>
+        <Route exact path="/" component={() => (isLogin ? <Redirect to="/cabinet" /> : <Landing />)} />
+        <Route exact path="/register" component={() => (isLogin ? <Redirect to="/cabinet" /> : <Registration />)} />
+        <Route exact path="/cabinet" component={() => (isLogin ? <Cabinet /> : <Redirect to="/" />)} />
+        <Route exact path="/groups" component={() => (isLogin ? <Groups /> : <Redirect to="/" />)} />
+        <Route exact path="/students" component={() => (isLogin ? <Students /> : <Redirect to="/" />)} />
+        <Route exact path="/university" component={() => (isLogin ? <University /> : <Redirect to="/" />)} />
+        <Redirect to="/" />
+      </Switch>
+    </Router>
   );
 };
 

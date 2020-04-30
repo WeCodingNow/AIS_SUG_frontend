@@ -1,8 +1,18 @@
-body > #root > div {
+#root {
+  display: flex;
+  flex-direction: column;
   height: 100vh;
 }
 
-.filler-with-header {
+/* body > #root > div {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+
+  /* height: 100vh; */
+/*}
+
+/* .filler-with-header {
   height: calc(100% - 9%);
 }
 
@@ -13,4 +23,4 @@ body > #root > div {
 body {
   padding: 0;
   margin: 0;
-}
+} */
