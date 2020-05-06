@@ -2,7 +2,7 @@ import { SemesterState, SemesterActionTypes, PUT_SEMESTER, CHANGE_SEMESTER } fro
 
 const initialState: SemesterState = {};
 
-export function SemesterReducer(state: SemesterState = initialState, action: SemesterActionTypes) {
+export default function semesterReducer(state: SemesterState = initialState, action: SemesterActionTypes) {
   switch (action.type) {
     case PUT_SEMESTER:
       return { ...state, [action.payload.id]: action.payload };

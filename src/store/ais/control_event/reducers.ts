@@ -2,7 +2,7 @@ import { ControlEventState, ControlEventActionTypes, PUT_CONTROL_EVENT, CHANGE_C
 
 const initialState: ControlEventState = {};
 
-export function ControlEventReducer(state: ControlEventState = initialState, action: ControlEventActionTypes) {
+export default function controlEventReducer(state: ControlEventState = initialState, action: ControlEventActionTypes) {
   switch (action.type) {
     case PUT_CONTROL_EVENT:
       return { ...state, [action.payload.id]: action.payload };

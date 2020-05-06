@@ -2,7 +2,7 @@ import { ResidenceState, ResidenceActionTypes, PUT_RESIDENCE, CHANGE_RESIDENCE }
 
 const initialState: ResidenceState = {};
 
-export function ResidenceReducer(state: ResidenceState = initialState, action: ResidenceActionTypes) {
+export default function residenceReducer(state: ResidenceState = initialState, action: ResidenceActionTypes) {
   switch (action.type) {
     case PUT_RESIDENCE:
       return { ...state, [action.payload.id]: action.payload };

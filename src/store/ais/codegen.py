@@ -115,7 +115,7 @@ import {{ {typename_first_upper}State, {typename_first_upper}ActionTypes, PUT_{t
 
 const initialState: {typename_first_upper}State = {{}};
 
-export function {typename_upper_after}Reducer(state: {typename_first_upper}State = initialState, action: {typename_first_upper}ActionTypes) {{
+export default function {typename_upper_after}Reducer(state: {typename_first_upper}State = initialState, action: {typename_first_upper}ActionTypes) {{
   switch (action.type) {{
     case PUT_{typename_all_upper}:
       return {{ ...state, [action.payload.id]: action.payload }};
@@ -137,7 +137,7 @@ def make_reducer_file(t: str):
         added = l.format(
             typename_all_upper=t.upper(),
             typename_first_upper=''.join(m.capitalize() for m in t.split('_')),
-            typename_upper_after=''.join(c if i != 0 else c.upper() for i, c in enumerate(''.join(m.capitalize() for m in t.split('_')))),
+            typename_upper_after=''.join(c.lower() if i == 0 else c for i, c in enumerate(''.join(m.capitalize() for m in t.split('_')))),
         )
 
         ret_str += added + '\n'
@@ -146,7 +146,7 @@ def make_reducer_file(t: str):
 
 to_generate = {
     # 'types',
-    # 'reducers'
+    'reducers',
 }
 
 generators = {
@@ -154,8 +154,37 @@ generators = {
     'reducers': ('reducers.ts', make_reducer_file),
 }
 
+def make_big_reducer(types):
+    ret_str = "import { combineReducers } from 'redux';\n\n"
+
+    for t in types:
+        ret_str += "import {typename_upper_after}Reducer from './{small_typename}/reducers';\n".format(
+            typename_upper_after=''.join(c.lower() if i == 0 else c for i, c in enumerate(''.join(m.capitalize() for m in t.split('_')))),
+            small_typename=t,
+        )
+    
+    ret_str += "\nconst reducer = combineReducers({\n"
+
+    for t in types:
+        ret_str += "  {typename_upper_after}: {typename_upper_after}Reducer,\n".format(
+            typename_upper_after=''.join(c.lower() if i == 0 else c for i, c in enumerate(''.join(m.capitalize() for m in t.split('_')))),
+        )
+
+    ret_str += "});\n\n"
+
+    ret_str += "export default reducer;\n"
+
+    return ret_str
+
+finishers = {
+    'reducers': ('reducer.ts', make_big_reducer),
+}
+
 root_folder = Path(Path(__file__).parent)
-nogen = ['contact']
+
+nogen = {
+    'contact'
+}
 
 for path in (
     path for path in root_folder.iterdir()
@@ -166,3 +195,9 @@ for path in (
         filename, fun = generators[gen]
         with open(path / filename, 'w') as file:
             file.write(fun(path.name))
+
+for gen in to_generate:
+    if gen in finishers:
+        filename, finisher = finishers[gen]
+        with open(root_folder / filename, 'w') as file:
+            file.write(finisher(set(types_fields.keys()) - nogen))

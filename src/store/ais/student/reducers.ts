@@ -2,7 +2,7 @@ import { StudentState, StudentActionTypes, PUT_STUDENT, CHANGE_STUDENT } from '.
 
 const initialState: StudentState = {};
 
-export function StudentReducer(state: StudentState = initialState, action: StudentActionTypes) {
+export default function studentReducer(state: StudentState = initialState, action: StudentActionTypes) {
   switch (action.type) {
     case PUT_STUDENT:
       return { ...state, [action.payload.id]: action.payload };

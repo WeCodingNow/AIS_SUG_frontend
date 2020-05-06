@@ -2,7 +2,7 @@ import { DisciplineState, DisciplineActionTypes, PUT_DISCIPLINE, CHANGE_DISCIPLI
 
 const initialState: DisciplineState = {};
 
-export function DisciplineReducer(state: DisciplineState = initialState, action: DisciplineActionTypes) {
+export default function disciplineReducer(state: DisciplineState = initialState, action: DisciplineActionTypes) {
   switch (action.type) {
     case PUT_DISCIPLINE:
       return { ...state, [action.payload.id]: action.payload };

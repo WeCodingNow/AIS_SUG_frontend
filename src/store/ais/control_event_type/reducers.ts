@@ -7,7 +7,7 @@ import {
 
 const initialState: ControlEventTypeState = {};
 
-export function ControlEventTypeReducer(
+export default function controlEventTypeReducer(
   state: ControlEventTypeState = initialState,
   action: ControlEventTypeActionTypes,
 ) {
