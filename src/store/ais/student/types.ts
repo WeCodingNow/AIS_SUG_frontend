@@ -1,3 +1,4 @@
+import { Action } from 'redux';
 import { Model, HashTable, ChangeAction } from '../types';
 
 export interface PureStudent {
@@ -18,13 +19,11 @@ export type StudentState = HashTable<Student>;
 export const PUT_STUDENT = 'PUT_STUDENT';
 export const CHANGE_STUDENT = 'CHANGE_STUDENT';
 
-interface PutStudent {
-  type: typeof PUT_STUDENT;
+interface PutStudent extends Action<typeof PUT_STUDENT> {
   payload: Student;
 }
 
-interface ChangeStudent {
-  type: typeof CHANGE_STUDENT;
+interface ChangeStudent extends Action<typeof CHANGE_STUDENT> {
   payload: ChangeAction<PureStudent>;
 }
 

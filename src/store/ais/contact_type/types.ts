@@ -1,3 +1,4 @@
+import { Action } from 'redux';
 import { Model, HashTable, ChangeAction } from '../types';
 
 export interface PureContactType {
@@ -11,13 +12,11 @@ export type ContactTypeState = HashTable<ContactType>;
 export const PUT_CONTACT_TYPE = 'PUT_CONTACT_TYPE';
 export const CHANGE_CONTACT_TYPE = 'CHANGE_CONTACT_TYPE';
 
-interface PutContactType {
-  type: typeof PUT_CONTACT_TYPE;
+interface PutContactType extends Action<typeof PUT_CONTACT_TYPE> {
   payload: ContactType;
 }
 
-interface ChangeContactType {
-  type: typeof CHANGE_CONTACT_TYPE;
+interface ChangeContactType extends Action<typeof CHANGE_CONTACT_TYPE> {
   payload: ChangeAction<PureContactType>;
 }
 

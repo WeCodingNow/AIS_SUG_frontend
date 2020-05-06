@@ -1,3 +1,4 @@
+import { Action } from 'redux';
 import { Model, HashTable, ChangeAction } from '../types';
 
 export interface PureMark {
@@ -15,13 +16,11 @@ export type MarkState = HashTable<Mark>;
 export const PUT_MARK = 'PUT_MARK';
 export const CHANGE_MARK = 'CHANGE_MARK';
 
-interface PutMark {
-  type: typeof PUT_MARK;
+interface PutMark extends Action<typeof PUT_MARK> {
   payload: Mark;
 }
 
-interface ChangeMark {
-  type: typeof CHANGE_MARK;
+interface ChangeMark extends Action<typeof CHANGE_MARK> {
   payload: ChangeAction<PureMark>;
 }
 

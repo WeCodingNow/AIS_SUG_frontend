@@ -1,3 +1,4 @@
+import { Action } from 'redux';
 import { Model, HashTable, ChangeAction } from '../types';
 
 export interface PureDiscipline {
@@ -14,13 +15,11 @@ export type DisciplineState = HashTable<Discipline>;
 export const PUT_DISCIPLINE = 'PUT_DISCIPLINE';
 export const CHANGE_DISCIPLINE = 'CHANGE_DISCIPLINE';
 
-interface PutDiscipline {
-  type: typeof PUT_DISCIPLINE;
+interface PutDiscipline extends Action<typeof PUT_DISCIPLINE> {
   payload: Discipline;
 }
 
-interface ChangeDiscipline {
-  type: typeof CHANGE_DISCIPLINE;
+interface ChangeDiscipline extends Action<typeof CHANGE_DISCIPLINE> {
   payload: ChangeAction<PureDiscipline>;
 }
 

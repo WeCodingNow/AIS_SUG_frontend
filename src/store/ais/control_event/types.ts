@@ -1,3 +1,4 @@
+import { Action } from 'redux';
 import { Model, HashTable, ChangeAction } from '../types';
 
 export interface PureControlEvent {
@@ -16,13 +17,11 @@ export type ControlEventState = HashTable<ControlEvent>;
 export const PUT_CONTROL_EVENT = 'PUT_CONTROL_EVENT';
 export const CHANGE_CONTROL_EVENT = 'CHANGE_CONTROL_EVENT';
 
-interface PutControlEvent {
-  type: typeof PUT_CONTROL_EVENT;
+interface PutControlEvent extends Action<typeof PUT_CONTROL_EVENT> {
   payload: ControlEvent;
 }
 
-interface ChangeControlEvent {
-  type: typeof CHANGE_CONTROL_EVENT;
+interface ChangeControlEvent extends Action<typeof CHANGE_CONTROL_EVENT> {
   payload: ChangeAction<PureControlEvent>;
 }
 

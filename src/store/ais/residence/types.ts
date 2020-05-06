@@ -1,3 +1,4 @@
+import { Action } from 'redux';
 import { Model, HashTable, ChangeAction } from '../types';
 
 export interface PureResidence {
@@ -15,13 +16,11 @@ export type ResidenceState = HashTable<Residence>;
 export const PUT_RESIDENCE = 'PUT_RESIDENCE';
 export const CHANGE_RESIDENCE = 'CHANGE_RESIDENCE';
 
-interface PutResidence {
-  type: typeof PUT_RESIDENCE;
+interface PutResidence extends Action<typeof PUT_RESIDENCE> {
   payload: Residence;
 }
 
-interface ChangeResidence {
-  type: typeof CHANGE_RESIDENCE;
+interface ChangeResidence extends Action<typeof CHANGE_RESIDENCE> {
   payload: ChangeAction<PureResidence>;
 }
 

@@ -70,6 +70,7 @@ types_fields = {
 
 
 type_file_template = """
+import {{ Action }} from 'redux';
 import {{ Model, HashTable, ChangeAction }} from '../types';
 
 export interface Pure{typename_first_upper} {{
@@ -83,13 +84,11 @@ export type {typename_first_upper}State = HashTable<{typename_first_upper}>;
 export const PUT_{typename_all_upper} = 'PUT_{typename_all_upper}';
 export const CHANGE_{typename_all_upper} = 'CHANGE_{typename_all_upper}';
 
-interface Put{typename_first_upper} {{
-  type: typeof PUT_{typename_all_upper};
+interface Put{typename_first_upper} extends Action<typeof PUT_{typename_all_upper}> {{
   payload: {typename_first_upper};
 }}
 
-interface Change{typename_first_upper} {{
-  type: typeof CHANGE_{typename_all_upper};
+interface Change{typename_first_upper} extends Action<typeof CHANGE_{typename_all_upper}> {{
   payload: ChangeAction<Pure{typename_first_upper}>;
 }}
 
@@ -146,7 +145,7 @@ def make_reducer_file(t: str):
 
 to_generate = {
     # 'types',
-    'reducers',
+    # 'reducers',
 }
 
 generators = {
