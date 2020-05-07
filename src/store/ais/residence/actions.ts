@@ -1,13 +1,13 @@
 import { bindActionCreators } from 'redux';
 
 import { store } from '../../store';
-import { getContact, getContacts } from './thunks';
+import { getResidence, getResidences } from './thunks';
 // import {} from './creators';
 
 export default bindActionCreators(
   {
-    getContact,
-    getContacts,
+    getResidence,
+    getResidences,
   },
   store.dispatch,
 );

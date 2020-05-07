@@ -18,7 +18,7 @@ class EntityEndpoint {
   }
 
   Get(id?: number): Promise<Response> {
-    return this.fetchWithParams('GET', `${this.entityEndpoint}/${id ? `/${id}` : ''}`);
+    return this.fetchWithParams('GET', `${this.entityEndpoint}${id ? `/${id}` : ''}`);
   }
 
   Post(body: any): Promise<Response> {

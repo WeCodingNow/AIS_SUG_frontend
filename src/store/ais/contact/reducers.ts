@@ -4,8 +4,9 @@ const initialState: ContactState = {};
 
 export default function contactReducer(state: ContactState = initialState, action: ContactActionTypes) {
   switch (action.type) {
-    case PUT_CONTACT:
+    case PUT_CONTACT: {
       return { ...state, [action.payload.id]: action.payload };
+    }
     case CHANGE_CONTACT:
       return {
         ...state,

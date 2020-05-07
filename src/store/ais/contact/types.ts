@@ -8,6 +8,12 @@ export interface PureContact {
 
 export interface Contact extends Model, PureContact {}
 
+export const toContact = (data: any): Contact => ({
+  id: data['id'],
+  def: data['def'],
+  typeID: data['type_id'],
+});
+
 export type ContactState = HashTable<Contact>;
 
 export const PUT_CONTACT = 'PUT_CONTACT';

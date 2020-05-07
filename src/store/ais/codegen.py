@@ -1,5 +1,5 @@
 from pathlib import Path
-
+from codegen import reducerfile, typefile, creatorfile, thunkfile, actionfile
 
 types_fields = {
 'contact': """
@@ -68,149 +68,65 @@ types_fields = {
 """,
 }
 
-
-type_file_template = """
-import {{ Action }} from 'redux';
-import {{ Model, HashTable, ChangeAction }} from '../types';
-
-export interface Pure{typename_first_upper} {{
-{type_fields}
-}}
-
-export interface {typename_first_upper} extends Model, Pure{typename_first_upper} {{}}
-
-export type {typename_first_upper}State = HashTable<{typename_first_upper}>;
-
-export const PUT_{typename_all_upper} = 'PUT_{typename_all_upper}';
-export const CHANGE_{typename_all_upper} = 'CHANGE_{typename_all_upper}';
-
-interface Put{typename_first_upper} extends Action<typeof PUT_{typename_all_upper}> {{
-  payload: {typename_first_upper};
-}}
-
-interface Change{typename_first_upper} extends Action<typeof CHANGE_{typename_all_upper}> {{
-  payload: ChangeAction<Pure{typename_first_upper}>;
-}}
-
-export type {typename_first_upper}ActionTypes = Put{typename_first_upper} | Change{typename_first_upper};
-"""
-
-def make_type_file(t: str):
-    ret_str = ''
-
-    for l in type_file_template.splitlines()[1:]:
-        added = l.format(
-            type_fields=types_fields[t][1:-1],
-            typename_all_upper=t.upper(),
-            typename_first_upper=''.join(m.capitalize() for m in t.split('_')),
-        )
-
-        ret_str += added + '\n'
-
-    return ret_str
-
-reducer_file_template = """
-import {{ {typename_first_upper}State, {typename_first_upper}ActionTypes, PUT_{typename_all_upper}, CHANGE_{typename_all_upper} }} from './types';
-
-const initialState: {typename_first_upper}State = {{}};
-
-export default function {typename_upper_after}Reducer(state: {typename_first_upper}State = initialState, action: {typename_first_upper}ActionTypes) {{
-  switch (action.type) {{
-    case PUT_{typename_all_upper}:
-      return {{ ...state, [action.payload.id]: action.payload }};
-    case CHANGE_{typename_all_upper}:
-      return {{
-        ...state,
-        [action.payload.id]: {{ ...state[action.payload.id], ...action.payload.model }},
-      }};
-    default:
-      return state;
-  }}
-}}
-"""
-
-def make_reducer_file(t: str):
-    ret_str = ''
-
-    for l in reducer_file_template.splitlines()[1:]:
-        added = l.format(
-            typename_all_upper=t.upper(),
-            typename_first_upper=''.join(m.capitalize() for m in t.split('_')),
-            typename_upper_after=''.join(c.lower() if i == 0 else c for i, c in enumerate(''.join(m.capitalize() for m in t.split('_')))),
-        )
-
-        ret_str += added + '\n'
-
-    return ret_str
-
-
-def make_big_reducer(types):
-    ret_str = "import { combineReducers } from 'redux';\n\n"
-
-    for t in types:
-        ret_str += "import {typename_upper_after}Reducer from './{small_typename}/reducers';\n".format(
-            typename_upper_after=''.join(c.lower() if i == 0 else c for i, c in enumerate(''.join(m.capitalize() for m in t.split('_')))),
-            small_typename=t,
-        )
-    
-    ret_str += "\nconst reducer = combineReducers({\n"
-
-    for t in types:
-        ret_str += "  {typename_upper_after}: {typename_upper_after}Reducer,\n".format(
-            typename_upper_after=''.join(c.lower() if i == 0 else c for i, c in enumerate(''.join(m.capitalize() for m in t.split('_')))),
-        )
-
-    ret_str += "});\n\n"
-
-    ret_str += "export default reducer;\n"
-
-    return ret_str
-
 generators = {
-    'types': ('types.ts', make_type_file),
-    'reducers': ('reducers.ts', make_reducer_file),
+    'types': ('types.ts', typefile.make_type_file_maker(types_fields)),
+    'reducers': ('reducers.ts', reducerfile.make_reducer_file),
+    'creators': ('creators.ts', creatorfile.make_creator_file),
+    'thunks': ('thunks.ts', thunkfile.make_thunk_file),
+    'actions': ('actions.ts', actionfile.make_action_file),
 }
 
 finishers = {
-    'reducers': ('reducer.ts', make_big_reducer),
+    'reducers': ('reducer.ts', reducerfile.make_big_reducer),
 }
 
 root_folder = Path(Path(__file__).parent)
 
 to_generate = {
     # 'types',
-    'reducers',
+    # 'reducers',
+    # 'creators',
+    'thunks',
+    'actions',
+}
+
+codegen_folders = {
+  'codegen',
 }
 
 nogen = {
-    'contact'
+  'contact',
 }
 
 types_order = [
-    'contact',
-    'contact_type',
-    'control_event',
-    'control_event_type',
-    'discipline',
-    'group',
-    'mark',
-    'residence',
-    'semester',
-    'student',
+  'contact',
+  'contact_type',
+  'control_event',
+  'control_event_type',
+  'discipline',
+  'group',
+  'mark',
+  'residence',
+  'semester',
+  'student',
 ]
 
+full_nogen = nogen | codegen_folders
+
+generated_files_folder = 'generated'
+
 for path in (
-    path for path in root_folder.iterdir()
-    if path.name not in nogen
-    and path.is_dir()
+  path for path in root_folder.iterdir()
+  if path.name not in full_nogen
+  and path.is_dir()
 ):
-    for gen in to_generate:
-        filename, fun = generators[gen]
-        with open(path / filename, 'w') as file:
-            file.write(fun(path.name))
+  for gen in to_generate:
+    filename, fun = generators[gen]
+    with open(path / filename, 'w') as file:
+      file.write(fun(path.name))
 
 for gen in to_generate:
-    if gen in finishers:
-        filename, finisher = finishers[gen]
-        with open(root_folder / filename, 'w') as file:
-            file.write(finisher(sorted(list(set(types_fields.keys()) - nogen), key=types_order.index)))
+  if gen in finishers:
+    filename, finisher = finishers[gen]
+    with open(root_folder / filename, 'w') as file:
+      file.write(finisher(sorted(list(set(types_fields.keys()) - full_nogen), key=types_order.index)))

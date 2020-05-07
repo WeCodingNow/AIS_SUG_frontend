@@ -6,19 +6,11 @@ import Students from './views/Students';
 import Cabinet from './views/Cabinet';
 import Groups from './views/Groups';
 import University from './views/University';
+import Debug from './views/Debug';
 import Header from './components/Header';
 import { useSelector } from './store/store';
 import './App.css';
 import Registration from './views/Register';
-
-// type AuthProps = {
-//   login: boolean;
-//   comp: React.Component;
-//   redirect: string;
-// };
-
-// const Auth: React.FC<AuthProps> = ({ login, comp, redirect = '/' }: AuthProps) =>
-//   login ? comp : <Redirect to={redirect} />;
 
 const App: React.FC = () => {
   const isLogin = useSelector((state) => state.auth.loggedIn);
@@ -33,6 +25,7 @@ const App: React.FC = () => {
         <Route exact path="/groups" component={() => (isLogin ? <Groups /> : <Redirect to="/" />)} />
         <Route exact path="/students" component={() => (isLogin ? <Students /> : <Redirect to="/" />)} />
         <Route exact path="/university" component={() => (isLogin ? <University /> : <Redirect to="/" />)} />
+        <Route exact path="/debug" component={Debug} />
         <Redirect to="/" />
       </Switch>
     </Router>

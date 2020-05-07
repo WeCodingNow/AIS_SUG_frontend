@@ -9,7 +9,6 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { Controller, useForm } from 'react-hook-form';
 
 import auth from '../store/auth/actions';
-import contact from '../store/ais/contact/actions';
 
 import './styles/landing.scss';
 
@@ -18,10 +17,10 @@ type LoginFormData = {
   password: string;
 };
 
+
 const Landing: React.FC = () => {
   const methods = useForm<LoginFormData>();
   const control = methods.control;
-  // const dispatch = useDispatch();
 
   const loginHandler = (): void => {
     const { username, password } = control.getValues();
@@ -32,7 +31,6 @@ const Landing: React.FC = () => {
   return (
     <Container fluid className="landing-view">
       <Row className="content">
-        <Button onClick={() => contact.getContacts()}>press me</Button>
         <Col className="login offset-md-8">
           <Form className="login__form">
             <Form.Group controlId="formBasicUsername">

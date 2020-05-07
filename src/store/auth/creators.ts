@@ -19,5 +19,3 @@ export function logout(): AuthActionTypes {
     type: LOGOUT,
   };
 }
-
-// export { login, signUp } from './thunks';
