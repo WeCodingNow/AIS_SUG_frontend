@@ -21,7 +21,7 @@ export const toGroup = (data: any): Group => ({
     .flatMap((st: any) => st['marks'])
     .flatMap((m: any) => m['control_event'])
     .flatMap((ce: any) => ce['semester'])
-    .flatMap((sem: any) => sem['id'])
+    .flatMap((sem: any) => sem['id']),
 });
 
 export type GroupState = HashTable<Group>;
