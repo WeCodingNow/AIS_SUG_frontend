@@ -2,7 +2,7 @@ import { ContactState, ContactActionTypes, PUT_CONTACT, CHANGE_CONTACT } from '.
 
 const initialState: ContactState = {};
 
-export function contactReducer(state: ContactState = initialState, action: ContactActionTypes) {
+export default function contactReducer(state: ContactState = initialState, action: ContactActionTypes) {
   switch (action.type) {
     case PUT_CONTACT:
       return { ...state, [action.payload.id]: action.payload };

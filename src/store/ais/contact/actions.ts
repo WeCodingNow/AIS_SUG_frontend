@@ -1,8 +1,13 @@
-// import * as creators from './creators';
-import * as thunks from './thunks';
-import { store } from '../../store';
 import { bindActionCreators } from 'redux';
 
-export default {
-  ...bindActionCreators(thunks, store.dispatch),
-};
+import { store } from '../../store';
+import { getContacts } from './thunks';
+// import * as thunks from './thunks';
+// import * as creators from './creators';
+
+export default bindActionCreators(
+  {
+    getContacts,
+  },
+  store.dispatch,
+);

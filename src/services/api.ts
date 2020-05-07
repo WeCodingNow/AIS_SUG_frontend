@@ -10,7 +10,7 @@ class EntityEndpoint {
   Get(id?: number): Promise<Response> {
     return fetch(`${this.url}/${this.entityEndpoint}${id || ''}`, {
       method: 'GET',
-      ...(this.requestParams ? this.requestParams : {}),
+      ...(this.requestParams || {}),
     });
   }
 
@@ -18,7 +18,7 @@ class EntityEndpoint {
     return fetch(`${this.url}/${this.entityEndpoint}`, {
       method: 'POST',
       body: JSON.stringify(body),
-      ...(this.requestParams ? this.requestParams : {}),
+      ...(this.requestParams || {}),
     });
   }
 
@@ -26,7 +26,7 @@ class EntityEndpoint {
     return fetch(`${this.url}/${this.entityEndpoint}${id}`, {
       method: 'PUT',
       body: JSON.stringify(body),
-      ...(this.requestParams ? this.requestParams : {}),
+      ...(this.requestParams || {}),
     });
   }
 }

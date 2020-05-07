@@ -1,6 +1,6 @@
 import { ThunkAction } from 'redux-thunk';
 import { LoginInfo, AuthActionTypes } from './types';
-import { loginSuccess } from './actions';
+import { loginSuccess } from './creators';
 import { State } from '../store';
 
 const API_URL = 'http://localhost:8080';

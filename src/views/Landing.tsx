@@ -7,9 +7,8 @@ import Button from 'react-bootstrap/Button';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Controller, useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
 
-import { login } from '../store/auth/actions';
+import auth from '../store/auth/actions';
 
 import './styles/landing.scss';
 
@@ -21,12 +20,12 @@ type LoginFormData = {
 const Landing: React.FC = () => {
   const methods = useForm<LoginFormData>();
   const control = methods.control;
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const loginHandler = (): void => {
     const { username, password } = control.getValues();
 
-    dispatch(login(username, password));
+    auth.login(username, password);
   };
 
   return (

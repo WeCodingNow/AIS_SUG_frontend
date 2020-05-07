@@ -143,15 +143,6 @@ def make_reducer_file(t: str):
 
     return ret_str
 
-to_generate = {
-    # 'types',
-    # 'reducers',
-}
-
-generators = {
-    'types': ('types.ts', make_type_file),
-    'reducers': ('reducers.ts', make_reducer_file),
-}
 
 def make_big_reducer(types):
     ret_str = "import { combineReducers } from 'redux';\n\n"
@@ -175,15 +166,38 @@ def make_big_reducer(types):
 
     return ret_str
 
+generators = {
+    'types': ('types.ts', make_type_file),
+    'reducers': ('reducers.ts', make_reducer_file),
+}
+
 finishers = {
     'reducers': ('reducer.ts', make_big_reducer),
 }
 
 root_folder = Path(Path(__file__).parent)
 
+to_generate = {
+    # 'types',
+    'reducers',
+}
+
 nogen = {
     'contact'
 }
+
+types_order = [
+    'contact',
+    'contact_type',
+    'control_event',
+    'control_event_type',
+    'discipline',
+    'group',
+    'mark',
+    'residence',
+    'semester',
+    'student',
+]
 
 for path in (
     path for path in root_folder.iterdir()
@@ -199,4 +213,4 @@ for gen in to_generate:
     if gen in finishers:
         filename, finisher = finishers[gen]
         with open(root_folder / filename, 'w') as file:
-            file.write(finisher(set(types_fields.keys()) - nogen))
+            file.write(finisher(sorted(list(set(types_fields.keys()) - nogen), key=types_order.index)))

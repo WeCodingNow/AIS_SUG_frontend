@@ -1,23 +1,15 @@
-import { LoginInfo, AuthActionTypes, LOGOUT, LOGIN_SUCCESS, SIGNUP_SUCCESS } from './types';
+import { bindActionCreators } from 'redux';
 
-export function loginSuccess(loginInfo: LoginInfo): AuthActionTypes {
-  return {
-    type: LOGIN_SUCCESS,
-    payload: loginInfo,
-  };
-}
+import { store } from '../store';
+// import * as thunks from './thunks';
+import { login } from './thunks';
+import { logout } from './creators';
 
-export function signupSuccess(loginInfo: LoginInfo): AuthActionTypes {
-  return {
-    type: SIGNUP_SUCCESS,
-    payload: loginInfo,
-  };
-}
-
-export function logout(): AuthActionTypes {
-  return {
-    type: LOGOUT,
-  };
-}
-
-export { login, signUp } from './thunks';
+// creators.
+export default bindActionCreators(
+  {
+    login,
+    logout,
+  },
+  store.dispatch,
+);
