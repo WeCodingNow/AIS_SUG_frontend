@@ -12,6 +12,19 @@ export interface PureSemester {
 
 export interface Semester extends Model, PureSemester {}
 
+export const toSemester = (data: any): Semester => ({
+  id: data['id'],
+  number: data['number'],
+  beginning: data['beginning'],
+  end: data['end'],
+
+  groupIDs: data['groups'].map((g: any) => g['id']),
+  controlEventIDs: data['groups']
+    .flatMap((g: any) => g['students'])
+    .flatMap((st: any) => st['marks'])
+    .map((m: any) => m['control_event']['id']),
+});
+
 export type SemesterState = HashTable<Semester>;
 
 export const PUT_SEMESTER = 'PUT_SEMESTER';

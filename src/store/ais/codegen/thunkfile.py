@@ -14,7 +14,7 @@ export const get{typename_first_upper} = (id: number): ThunkResult<void> => asyn
     const resp = await AisAPI.{typename_first_upper}.Get(id);
     const jsonedResp = await resp.json();
 
-    dispatch(put{typename_first_upper}(to{tupename_first_upper}(jsonedResp)));
+    dispatch(put{typename_first_upper}(to{typename_first_upper}(jsonedResp)));
   }} catch (e) {{
     console.log(e);
     console.log("couldn't get {plain_typename} ", id);

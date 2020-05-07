@@ -8,6 +8,7 @@ import mark from './mark/actions';
 import residence from './residence/actions';
 import semester from './semester/actions';
 import student from './student/actions';
+import cathedra from './cathedra/actions';
 
 export default {
   contact: { get: contact.getContact, getAll: contact.getContacts },
@@ -20,13 +21,5 @@ export default {
   residence: { get: residence.getResidence, getAll: residence.getResidences },
   semester: { get: semester.getSemester, getAll: semester.getSemesters },
   student: { get: student.getStudent, getAll: student.getStudents },
-  // contactType,
-  // controlEvent,
-  // controlEventType,
-  // discipline,
-  // group,
-  // mark,
-  // residence,
-  // semester,
-  // student,
+  cathedra: { get: cathedra.getCathedra, getAll: cathedra.getCathedras },
 };

@@ -4,13 +4,21 @@ import { Model, HashTable, ChangeAction } from '../types';
 export interface PureControlEvent {
   date: Date;
 
-  controlEventID: number;
   disciplineID: number;
   semesterID: number;
   markIDs: Array<number>;
 }
 
 export interface ControlEvent extends Model, PureControlEvent {}
+
+export const toControlEvent = (data: any): ControlEvent => ({
+  id: data['id'],
+  date: data['date'],
+
+  disciplineID: data['discipline']['id'],
+  semesterID: data['semester']['id'],
+  markIDs: data['semester']['marks'].map((m: any) => m['id']),
+});
 
 export type ControlEventState = HashTable<ControlEvent>;
 

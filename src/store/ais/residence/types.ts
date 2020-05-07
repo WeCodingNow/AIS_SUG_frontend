@@ -11,6 +11,15 @@ export interface PureResidence {
 
 export interface Residence extends Model, PureResidence {}
 
+export const toResidence = (data: any): Residence => ({
+  id: data['id'],
+  address: data['address'],
+  city: data['city'],
+  community: data['community'],
+
+  studentIDs: data['students'].map((s: any) => s['id']),
+});
+
 export type ResidenceState = HashTable<Residence>;
 
 export const PUT_RESIDENCE = 'PUT_RESIDENCE';

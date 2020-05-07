@@ -14,6 +14,18 @@ export interface PureStudent {
 
 export interface Student extends Model, PureStudent {}
 
+export const toStudent = (data: any): Student => ({
+  id: data['id'],
+  name: data['name'],
+  secondName: data['second_name'],
+  thirdName: data['third_name'],
+
+  groupID: data['group']['id'],
+  residenceID: data['residence']['id'],
+  contactIDs: data['contacts'].map((co: any) => co['id']),
+  markIDs: data['marks'].map((m: any) => m['id']),
+});
+
 export type StudentState = HashTable<Student>;
 
 export const PUT_STUDENT = 'PUT_STUDENT';

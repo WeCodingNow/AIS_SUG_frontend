@@ -1,6 +1,6 @@
 import { ThunkAction } from 'redux-thunk';
 
-import { ContactTypeActionTypes, ContactType } from './types';
+import { ContactTypeActionTypes, ContactType, toContactType } from './types';
 import { putContactType } from './creators';
 
 import { State } from '../../store';
@@ -13,7 +13,7 @@ export const getContactType = (id: number): ThunkResult<void> => async (dispatch
     const resp = await AisAPI.ContactType.Get(id);
     const jsonedResp = await resp.json();
 
-    dispatch(putContactType(jsonedResp));
+    dispatch(putContactType(toContactType(jsonedResp)));
   } catch (e) {
     console.log(e);
     console.log("couldn't get contact type ", id);
@@ -25,7 +25,7 @@ export const getContactTypes = (): ThunkResult<void> => async (dispatch) => {
     const resp = await AisAPI.ContactType.Get();
     const jsonedResp = await resp.json();
 
-    jsonedResp.map((c: ContactType) => dispatch(putContactType(c)));
+    jsonedResp.map((c: ContactType) => dispatch(putContactType(toContactType(c))));
   } catch (e) {
     console.log(e);
     console.log("couldn't get contact types");

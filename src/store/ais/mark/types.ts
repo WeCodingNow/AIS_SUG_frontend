@@ -11,6 +11,15 @@ export interface PureMark {
 
 export interface Mark extends Model, PureMark {}
 
+export const toMark = (data: any): Mark => ({
+  id: data['id'],
+  date: data['date'],
+  value: data['value'],
+
+  controlEventID: data['control_event']['id'],
+  studentID: data['student']['id'],
+});
+
 export type MarkState = HashTable<Mark>;
 
 export const PUT_MARK = 'PUT_MARK';

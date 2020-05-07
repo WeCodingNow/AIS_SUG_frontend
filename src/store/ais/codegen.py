@@ -16,7 +16,6 @@ types_fields = {
 'control_event': """
   date: Date;
 
-  controlEventID: number;
   disciplineID: number;
   semesterID: number;
   markIDs: Array<number>;
@@ -33,6 +32,12 @@ types_fields = {
   cathedraID: number;
   studentIDs: Array<number>;
   semesterIDs: Array<number>;
+""",
+'cathedra': """
+  name: string;
+  shortName: string;
+
+  groupIDs: Array<number>;
 """,
 'mark': """
   date: Date;
@@ -68,8 +73,98 @@ types_fields = {
 """,
 }
 
+type_fields_api_bindings = {
+'contact': """
+  id: data['id'],
+  def: data['def'],
+
+  typeID: data['type']['id'];
+""",
+'contact_type': """
+  id: data['id'],
+  def: data['def'],
+""",
+'control_event_type': """
+  id: data['id'],
+  def: data['def'],
+""",
+'control_event': """
+  id: data['id'],
+  date: data['date'],
+
+  disciplineID: data['discipline']['id'],
+  semesterID: data['semester']['id'],
+  markIDs: data['semester']['marks'].map((m: any) => m['id']),
+""",
+'discipline': """
+  id: data['id'],
+  name: data['name'],
+  hours: data['hours'],
+
+  controlEventIDs: data['control_events'].map((ce: any) => ce['id']),
+""",
+'group': """
+  id: data['id'],
+  number: data['number'],
+
+  cathedraID: data['cathedra']['id'],
+  studentIDs: data['students'].map((st: any) => st['id']),
+  semesterIDs: data['students']
+    .flatMap((st: any) => st['marks'])
+    .flatMap((m: any) => m['control_event'])
+    .flatMap((ce: any) => ce['semester'])
+    .flatMap((sem: any) => sem['id'])
+""",
+'cathedra': """
+  id: data['id'],
+  name: data['name'],
+  shortName: data['short_name'],
+
+  groupIDs: data['groups'].map((g: any) => g['id']),
+""",
+'mark': """
+  id: data['id'],
+  date: data['date'],
+  value: data['value'],
+
+  controlEventID: data['control_event']['id'],
+  studentID: data['student']['id'],
+""",
+'residence': """
+  id: data['id'],
+  address: data['address'],
+  city: data['city'],
+  community: data['community'],
+
+  studentIDs: data['students'].map((s: any) => s['id']),
+""",
+'semester': """
+  id: data['id'],
+  number: data['number'],
+  beginning: data['beginning'],
+  end: data['end'],
+
+  groupIDs: data['groups'].map((g: any) => g['id']),
+  controlEventIDs: data['groups']
+    .flatMap((g: any) => g['students'])
+    .flatMap((st: any) => st['marks'])
+    .map((m: any) => m['control_event']['id']),
+""",
+'student': """
+  id: data['id'],
+  name: data['name'],
+  secondName: data['second_name'],
+  thirdName: data['third_name'],
+
+  groupID: data['group']['id'],
+  residenceID: data['residence']['id'],
+  contactIDs: data['contacts'].map((co: any) => co['id']),
+  markIDs: data['marks'].map((m: any) => m['id']),
+""",
+}
+
 generators = {
-    'types': ('types.ts', typefile.make_type_file_maker(types_fields)),
+    'types': ('types.ts', typefile.make_type_file_maker(types_fields, type_fields_api_bindings)),
     'reducers': ('reducers.ts', reducerfile.make_reducer_file),
     'creators': ('creators.ts', creatorfile.make_creator_file),
     'thunks': ('thunks.ts', thunkfile.make_thunk_file),
@@ -83,11 +178,11 @@ finishers = {
 root_folder = Path(Path(__file__).parent)
 
 to_generate = {
-    # 'types',
+    'types',
     # 'reducers',
     # 'creators',
-    'thunks',
-    'actions',
+    # 'thunks',
+    # 'actions',
 }
 
 codegen_folders = {
@@ -99,16 +194,17 @@ nogen = {
 }
 
 types_order = [
-  'contact',
-  'contact_type',
+  'cathedra',
+  'group',
+  'semester',
   'control_event',
   'control_event_type',
-  'discipline',
-  'group',
-  'mark',
-  'residence',
-  'semester',
   'student',
+  'contact',
+  'contact_type',
+  'residence',
+  'discipline',
+  'mark',
 ]
 
 full_nogen = nogen | codegen_folders

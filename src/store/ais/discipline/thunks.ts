@@ -1,6 +1,6 @@
 import { ThunkAction } from 'redux-thunk';
 
-import { DisciplineActionTypes, Discipline } from './types';
+import { DisciplineActionTypes, Discipline, toDiscipline } from './types';
 import { putDiscipline } from './creators';
 
 import { State } from '../../store';
@@ -13,7 +13,7 @@ export const getDiscipline = (id: number): ThunkResult<void> => async (dispatch)
     const resp = await AisAPI.Discipline.Get(id);
     const jsonedResp = await resp.json();
 
-    dispatch(putDiscipline(jsonedResp));
+    dispatch(putDiscipline(toDiscipline(jsonedResp)));
   } catch (e) {
     console.log(e);
     console.log("couldn't get discipline ", id);
@@ -25,7 +25,7 @@ export const getDisciplines = (): ThunkResult<void> => async (dispatch) => {
     const resp = await AisAPI.Discipline.Get();
     const jsonedResp = await resp.json();
 
-    jsonedResp.map((d: Discipline) => dispatch(putDiscipline(d)));
+    jsonedResp.map((d: Discipline) => dispatch(putDiscipline(toDiscipline(d))));
   } catch (e) {
     console.log(e);
     console.log("couldn't get disciplines");

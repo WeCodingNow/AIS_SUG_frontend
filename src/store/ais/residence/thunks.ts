@@ -1,6 +1,6 @@
 import { ThunkAction } from 'redux-thunk';
 
-import { ResidenceActionTypes, Residence } from './types';
+import { ResidenceActionTypes, Residence, toResidence } from './types';
 import { putResidence } from './creators';
 
 import { State } from '../../store';
@@ -13,7 +13,7 @@ export const getResidence = (id: number): ThunkResult<void> => async (dispatch) 
     const resp = await AisAPI.Residence.Get(id);
     const jsonedResp = await resp.json();
 
-    dispatch(putResidence(jsonedResp));
+    dispatch(putResidence(toResidence(jsonedResp)));
   } catch (e) {
     console.log(e);
     console.log("couldn't get residence ", id);
@@ -25,7 +25,7 @@ export const getResidences = (): ThunkResult<void> => async (dispatch) => {
     const resp = await AisAPI.Residence.Get();
     const jsonedResp = await resp.json();
 
-    jsonedResp.map((r: Residence) => dispatch(putResidence(r)));
+    jsonedResp.map((r: Residence) => dispatch(putResidence(toResidence(r))));
   } catch (e) {
     console.log(e);
     console.log("couldn't get residences");

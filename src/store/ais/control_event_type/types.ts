@@ -7,6 +7,11 @@ export interface PureControlEventType {
 
 export interface ControlEventType extends Model, PureControlEventType {}
 
+export const toControlEventType = (data: any): ControlEventType => ({
+  id: data['id'],
+  def: data['def'],
+});
+
 export type ControlEventTypeState = HashTable<ControlEventType>;
 
 export const PUT_CONTROL_EVENT_TYPE = 'PUT_CONTROL_EVENT_TYPE';

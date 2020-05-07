@@ -65,6 +65,7 @@ const Debug: React.FC = () => (
       { entity: 'residence', getter: ais.residence.get, allGetter: ais.residence.getAll },
       { entity: 'semester', getter: ais.semester.get, allGetter: ais.semester.getAll },
       { entity: 'student', getter: ais.student.get, allGetter: ais.student.getAll },
+      { entity: 'cathedra', getter: ais.cathedra.get, allGetter: ais.cathedra.getAll },
     ].map((desc, i) => (
       <Row key={i}>
         <EntityGetter entity={desc.entity} getter={desc.getter} allGetter={desc.allGetter} />

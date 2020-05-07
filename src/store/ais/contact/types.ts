@@ -11,7 +11,7 @@ export interface Contact extends Model, PureContact {}
 export const toContact = (data: any): Contact => ({
   id: data['id'],
   def: data['def'],
-  typeID: data['type_id'],
+  typeID: data['type']['id'],
 });
 
 export type ContactState = HashTable<Contact>;

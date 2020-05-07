@@ -10,6 +10,14 @@ export interface PureDiscipline {
 
 export interface Discipline extends Model, PureDiscipline {}
 
+export const toDiscipline = (data: any): Discipline => ({
+  id: data['id'],
+  name: data['name'],
+  hours: data['hours'],
+
+  controlEventIDs: data['control_events'].map((ce: any) => ce['id']),
+});
+
 export type DisciplineState = HashTable<Discipline>;
 
 export const PUT_DISCIPLINE = 'PUT_DISCIPLINE';

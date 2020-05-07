@@ -11,6 +11,19 @@ export interface PureGroup {
 
 export interface Group extends Model, PureGroup {}
 
+export const toGroup = (data: any): Group => ({
+  id: data['id'],
+  number: data['number'],
+
+  cathedraID: data['cathedra']['id'],
+  studentIDs: data['students'].map((st: any) => st['id']),
+  semesterIDs: data['students']
+    .flatMap((st: any) => st['marks'])
+    .flatMap((m: any) => m['control_event'])
+    .flatMap((ce: any) => ce['semester'])
+    .flatMap((sem: any) => sem['id'])
+});
+
 export type GroupState = HashTable<Group>;
 
 export const PUT_GROUP = 'PUT_GROUP';

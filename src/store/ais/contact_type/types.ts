@@ -7,6 +7,11 @@ export interface PureContactType {
 
 export interface ContactType extends Model, PureContactType {}
 
+export const toContactType = (data: any): ContactType => ({
+  id: data['id'],
+  def: data['def'],
+});
+
 export type ContactTypeState = HashTable<ContactType>;
 
 export const PUT_CONTACT_TYPE = 'PUT_CONTACT_TYPE';

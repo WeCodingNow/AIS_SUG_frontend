@@ -1,6 +1,6 @@
 import { ThunkAction } from 'redux-thunk';
 
-import { StudentActionTypes, Student } from './types';
+import { StudentActionTypes, Student, toStudent } from './types';
 import { putStudent } from './creators';
 
 import { State } from '../../store';
@@ -13,7 +13,7 @@ export const getStudent = (id: number): ThunkResult<void> => async (dispatch) =>
     const resp = await AisAPI.Student.Get(id);
     const jsonedResp = await resp.json();
 
-    dispatch(putStudent(jsonedResp));
+    dispatch(putStudent(toStudent(jsonedResp)));
   } catch (e) {
     console.log(e);
     console.log("couldn't get student ", id);
@@ -25,7 +25,7 @@ export const getStudents = (): ThunkResult<void> => async (dispatch) => {
     const resp = await AisAPI.Student.Get();
     const jsonedResp = await resp.json();
 
-    jsonedResp.map((s: Student) => dispatch(putStudent(s)));
+    jsonedResp.map((s: Student) => dispatch(putStudent(toStudent(s))));
   } catch (e) {
     console.log(e);
     console.log("couldn't get students");

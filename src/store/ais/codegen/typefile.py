@@ -36,6 +36,7 @@ def make_type_file_maker(types_fields, type_api_bindings):
             added = l.format(
                 type_fields=types_fields[t][1:-1],
                 type_api_bindings=types_fields[t][1:-1],
+                type_fields_api_bindings=type_api_bindings[t][1:-1],
                 typename_all_upper=t.upper(),
                 typename_first_upper=''.join(m.capitalize() for m in t.split('_')),
             )

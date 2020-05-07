@@ -1,6 +1,6 @@
 import { ThunkAction } from 'redux-thunk';
 
-import { GroupActionTypes, Group } from './types';
+import { GroupActionTypes, Group, toGroup } from './types';
 import { putGroup } from './creators';
 
 import { State } from '../../store';
@@ -13,7 +13,7 @@ export const getGroup = (id: number): ThunkResult<void> => async (dispatch) => {
     const resp = await AisAPI.Group.Get(id);
     const jsonedResp = await resp.json();
 
-    dispatch(putGroup(jsonedResp));
+    dispatch(putGroup(toGroup(jsonedResp)));
   } catch (e) {
     console.log(e);
     console.log("couldn't get group ", id);
@@ -25,7 +25,7 @@ export const getGroups = (): ThunkResult<void> => async (dispatch) => {
     const resp = await AisAPI.Group.Get();
     const jsonedResp = await resp.json();
 
-    jsonedResp.map((g: Group) => dispatch(putGroup(g)));
+    jsonedResp.map((g: Group) => dispatch(putGroup(toGroup(g))));
   } catch (e) {
     console.log(e);
     console.log("couldn't get groups");
