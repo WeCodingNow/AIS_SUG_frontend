@@ -1,12 +1,12 @@
 import { ThunkAction } from 'redux-thunk';
-// import { ContactActionTypes } from './types';
+import { ContactActionTypes } from './types';
 // import { putContactCreator, changeContactCreator } from './creators';
 import { State } from '../../store';
 
 import AisAPI from '../../../services/ais';
-import { Action } from 'redux';
+// import { Action } from 'redux';
 
-type ThunkResult<R> = ThunkAction<R, State, undefined, Action>;
+type ThunkResult<R> = ThunkAction<R, State, undefined, ContactActionTypes>;
 
 export const getContacts = (): ThunkResult<void> => async () => {
   try {
