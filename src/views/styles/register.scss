@@ -1,12 +1,32 @@
 @import 'views.scss';
+@import "node_modules/bootstrap/scss/bootstrap";
 
 $margin-top-value: 2em;
 
 .register-view {
   @include view;
+  // @include make-container();
 
   .content {
+    // @include make-row();
     margin: $margin-top-value 0 0;
     height: calc(100% - #{$margin-top-value});
+  }
+
+  .header {
+    margin: $margin-top-value 0 0;
+    text-align: center;
+    size: 10px;
+
+    .text {
+      display: inline;
+      font-size: xx-large;
+    }
+  }
+}
+
+.register-form {
+  .invalid-feedback {
+    display: block;
   }
 }

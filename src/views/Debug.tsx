@@ -60,12 +60,12 @@ const Debug: React.FC = () => (
         allGetter: ais.controlEventType.getAll,
       },
       { entity: 'discipline', getter: ais.discipline.get, allGetter: ais.discipline.getAll },
-      { entity: 'group', getter: ais.group.get, allGetter: ais.group.getAll },
+      { entity: 'group', getter: ais.group.fill, allGetter: ais.group.fillAll },
       { entity: 'mark', getter: ais.mark.get, allGetter: ais.mark.getAll },
       { entity: 'residence', getter: ais.residence.get, allGetter: ais.residence.getAll },
-      { entity: 'semester', getter: ais.semester.get, allGetter: ais.semester.getAll },
+      { entity: 'semester', getter: ais.semester.fill, allGetter: ais.semester.fillAll },
       { entity: 'student', getter: ais.student.get, allGetter: ais.student.getAll },
-      { entity: 'cathedra', getter: ais.cathedra.get, allGetter: ais.cathedra.getAll },
+      { entity: 'cathedra', getter: ais.cathedra.fill, allGetter: ais.cathedra.fillAll },
     ].map((desc, i) => (
       <Row key={i}>
         <EntityGetter entity={desc.entity} getter={desc.getter} allGetter={desc.allGetter} />

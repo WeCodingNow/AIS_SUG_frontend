@@ -1,33 +1,10 @@
-import { ThunkAction } from 'redux-thunk';
+import { putGroup, changeGroupLoadingState } from './creators';
 
-import { GroupActionTypes, Group, toGroup } from './types';
-import { putGroup } from './creators';
-
-import { State } from '../../store';
 import AisAPI from '../../../services/ais';
+import { makeGetters, makePutters } from '../../general/thunks';
+import { toGroup } from './types';
 
-type ThunkResult<R> = ThunkAction<R, State, undefined, GroupActionTypes>;
+const { getOne, getAll } = makeGetters(AisAPI.Group);
+const { putOne, putAll } = makePutters(putGroup, changeGroupLoadingState, toGroup, { getOne, getAll });
 
-export const getGroup = (id: number): ThunkResult<void> => async (dispatch) => {
-  try {
-    const resp = await AisAPI.Group.Get(id);
-    const jsonedResp = await resp.json();
-
-    dispatch(putGroup(toGroup(jsonedResp)));
-  } catch (e) {
-    console.log(e);
-    console.log("couldn't get group ", id);
-  }
-};
-
-export const getGroups = (): ThunkResult<void> => async (dispatch) => {
-  try {
-    const resp = await AisAPI.Group.Get();
-    const jsonedResp = await resp.json();
-
-    jsonedResp.map((g: Group) => dispatch(putGroup(toGroup(g))));
-  } catch (e) {
-    console.log(e);
-    console.log("couldn't get groups");
-  }
-};
+export { getOne as getGroup, getAll as getGroups, putOne as fillGroup, putAll as fillGroups };

@@ -1,33 +1,10 @@
-import { ThunkAction } from 'redux-thunk';
+import { putSemester, changeSemesterLoadingState } from './creators';
 
-import { SemesterActionTypes, Semester, toSemester } from './types';
-import { putSemester } from './creators';
-
-import { State } from '../../store';
 import AisAPI from '../../../services/ais';
+import { makeGetters, makePutters } from '../../general/thunks';
+import { toSemester } from './types';
 
-type ThunkResult<R> = ThunkAction<R, State, undefined, SemesterActionTypes>;
+const { getOne, getAll } = makeGetters(AisAPI.Semester);
+const { putOne, putAll } = makePutters(putSemester, changeSemesterLoadingState, toSemester, { getOne, getAll });
 
-export const getSemester = (id: number): ThunkResult<void> => async (dispatch) => {
-  try {
-    const resp = await AisAPI.Semester.Get(id);
-    const jsonedResp = await resp.json();
-
-    dispatch(putSemester(toSemester(jsonedResp)));
-  } catch (e) {
-    console.log(e);
-    console.log("couldn't get semester ", id);
-  }
-};
-
-export const getSemesters = (): ThunkResult<void> => async (dispatch) => {
-  try {
-    const resp = await AisAPI.Semester.Get();
-    const jsonedResp = await resp.json();
-
-    jsonedResp.map((s: Semester) => dispatch(putSemester(toSemester(s))));
-  } catch (e) {
-    console.log(e);
-    console.log("couldn't get semesters");
-  }
-};
+export { getOne as getSemester, getAll as getSemesters, putOne as fillSemester, putAll as fillSemesters };

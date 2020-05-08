@@ -1,4 +1,12 @@
-import { CathedraActionTypes, Cathedra, PureCathedra, PUT_CATHEDRA, CHANGE_CATHEDRA } from './types';
+import {
+  CathedraActionTypes,
+  Cathedra,
+  PureCathedra,
+  PUT_CATHEDRA,
+  CHANGE_CATHEDRA,
+  CHANGE_LOADING_CATHEDRA,
+} from './types';
+import { LoadingState } from '../../loading/types';
 
 export const putCathedra = (cathedra: Cathedra): CathedraActionTypes => ({
   type: PUT_CATHEDRA,
@@ -11,4 +19,9 @@ export const changeCathedra = (id: number, cathedra: PureCathedra): CathedraActi
     id,
     model: cathedra,
   },
+});
+
+export const changeCathedraLoadingState = (state: LoadingState): CathedraActionTypes => ({
+  type: CHANGE_LOADING_CATHEDRA,
+  state: state,
 });

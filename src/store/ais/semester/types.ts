@@ -1,5 +1,6 @@
 import { Action } from 'redux';
-import { Model, HashTable, ChangeAction } from '../types';
+import { Model, ChangeAction, ModelState } from '../types';
+import { LoadingAction, Loadable } from '../../loading/types';
 
 export interface PureSemester {
   number: number;
@@ -25,17 +26,19 @@ export const toSemester = (data: any): Semester => ({
     .map((m: any) => m['control_event']['id']),
 });
 
-export type SemesterState = HashTable<Semester>;
+export interface SemesterState extends ModelState<Semester>, Loadable {}
 
 export const PUT_SEMESTER = 'PUT_SEMESTER';
-export const CHANGE_SEMESTER = 'CHANGE_SEMESTER';
-
 interface PutSemester extends Action<typeof PUT_SEMESTER> {
   payload: Semester;
 }
 
+export const CHANGE_SEMESTER = 'CHANGE_SEMESTER';
 interface ChangeSemester extends Action<typeof CHANGE_SEMESTER> {
   payload: ChangeAction<PureSemester>;
 }
 
-export type SemesterActionTypes = PutSemester | ChangeSemester;
+export const CHANGE_LOADING_SEMESTER = 'CHANGE_LOADING_SEMESTER';
+export type ChangeLoadingSemester = LoadingAction<typeof CHANGE_LOADING_SEMESTER>;
+
+export type SemesterActionTypes = PutSemester | ChangeSemester | ChangeLoadingSemester;

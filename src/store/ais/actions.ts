@@ -16,10 +16,10 @@ export default {
   controlEvent: { get: controlEvent.getControlEvent, getAll: controlEvent.getControlEvents },
   controlEventType: { get: controlEventType.getControlEventType, getAll: controlEventType.getControlEventTypes },
   discipline: { get: discipline.getDiscipline, getAll: discipline.getDisciplines },
-  group: { get: group.getGroup, getAll: group.getGroups },
+  group: { fill: group.fillGroup, fillAll: group.fillGroups },
   mark: { get: mark.getMark, getAll: mark.getMarks },
   residence: { get: residence.getResidence, getAll: residence.getResidences },
-  semester: { get: semester.getSemester, getAll: semester.getSemesters },
+  semester: { fill: semester.fillSemester, fillAll: semester.fillSemesters },
   student: { get: student.getStudent, getAll: student.getStudents },
-  cathedra: { get: cathedra.getCathedra, getAll: cathedra.getCathedras },
+  cathedra: { fill: cathedra.fillCathedra, fillAll: cathedra.fillCathedras },
 };

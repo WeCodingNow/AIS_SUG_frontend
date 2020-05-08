@@ -1,13 +1,13 @@
 import { bindActionCreators } from 'redux';
 
 import { store } from '../../store';
-import { getSemester, getSemesters } from './thunks';
+import { fillSemester, fillSemesters } from './thunks';
 // import {} from './creators';
 
 export default bindActionCreators(
   {
-    getSemester,
-    getSemesters,
+    fillSemester,
+    fillSemesters,
   },
   store.dispatch,
 );

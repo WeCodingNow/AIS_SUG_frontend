@@ -12,11 +12,10 @@ import auth from '../store/auth/actions';
 
 import './styles/landing.scss';
 
-type LoginFormData = {
+interface LoginFormData {
   username: string;
   password: string;
-};
-
+}
 
 const Landing: React.FC = () => {
   const methods = useForm<LoginFormData>();

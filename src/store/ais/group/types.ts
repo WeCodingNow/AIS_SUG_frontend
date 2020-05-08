@@ -1,5 +1,7 @@
 import { Action } from 'redux';
-import { Model, HashTable, ChangeAction } from '../types';
+
+import { Model, ChangeAction, ModelState } from '../types';
+import { LoadingAction, Loadable } from '../../loading/types';
 
 export interface PureGroup {
   number: number;
@@ -17,24 +19,22 @@ export const toGroup = (data: any): Group => ({
 
   cathedraID: data['cathedra']['id'],
   studentIDs: data['students'].map((st: any) => st['id']),
-  semesterIDs: data['students']
-    .flatMap((st: any) => st['marks'])
-    .flatMap((m: any) => m['control_event'])
-    .flatMap((ce: any) => ce['semester'])
-    .flatMap((sem: any) => sem['id']),
+  semesterIDs: data['semesters'].map((sem: any) => sem['id']),
 });
 
-export type GroupState = HashTable<Group>;
+export interface GroupState extends ModelState<Group>, Loadable {}
 
 export const PUT_GROUP = 'PUT_GROUP';
-export const CHANGE_GROUP = 'CHANGE_GROUP';
-
 interface PutGroup extends Action<typeof PUT_GROUP> {
   payload: Group;
 }
 
+export const CHANGE_GROUP = 'CHANGE_GROUP';
 interface ChangeGroup extends Action<typeof CHANGE_GROUP> {
   payload: ChangeAction<PureGroup>;
 }
 
-export type GroupActionTypes = PutGroup | ChangeGroup;
+export const CHANGE_LOADING_GROUP = 'CHANGE_LOADING_GROUP';
+export type ChangeLoadingGroup = LoadingAction<typeof CHANGE_LOADING_GROUP>;
+
+export type GroupActionTypes = PutGroup | ChangeGroup | ChangeLoadingGroup;

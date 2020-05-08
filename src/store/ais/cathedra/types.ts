@@ -1,5 +1,7 @@
 import { Action } from 'redux';
-import { Model, HashTable, ChangeAction } from '../types';
+
+import { Model, ChangeAction, ModelState } from '../types';
+import { LoadingAction, Loadable } from '../../loading/types';
 
 export interface PureCathedra {
   name: string;
@@ -18,17 +20,19 @@ export const toCathedra = (data: any): Cathedra => ({
   groupIDs: data['groups'].map((g: any) => g['id']),
 });
 
-export type CathedraState = HashTable<Cathedra>;
+export interface CathedraState extends ModelState<Cathedra>, Loadable {}
 
 export const PUT_CATHEDRA = 'PUT_CATHEDRA';
-export const CHANGE_CATHEDRA = 'CHANGE_CATHEDRA';
-
 interface PutCathedra extends Action<typeof PUT_CATHEDRA> {
   payload: Cathedra;
 }
 
+export const CHANGE_CATHEDRA = 'CHANGE_CATHEDRA';
 interface ChangeCathedra extends Action<typeof CHANGE_CATHEDRA> {
   payload: ChangeAction<PureCathedra>;
 }
 
-export type CathedraActionTypes = PutCathedra | ChangeCathedra;
+export const CHANGE_LOADING_CATHEDRA = 'CHANGE_LOADING_CATHEDRA';
+export type ChangeLoadingCathedra = LoadingAction<typeof CHANGE_LOADING_CATHEDRA>;
+
+export type CathedraActionTypes = PutCathedra | ChangeCathedra | ChangeLoadingCathedra;

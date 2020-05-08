@@ -1,15 +1,25 @@
-import { SemesterState, SemesterActionTypes, PUT_SEMESTER, CHANGE_SEMESTER } from './types';
+import { SemesterState, SemesterActionTypes, PUT_SEMESTER, CHANGE_SEMESTER, CHANGE_LOADING_SEMESTER } from './types';
 
-const initialState: SemesterState = {};
+const initialState: SemesterState = {
+  byID: {},
+};
 
 export default function semesterReducer(state: SemesterState = initialState, action: SemesterActionTypes) {
   switch (action.type) {
     case PUT_SEMESTER:
-      return { ...state, [action.payload.id]: action.payload };
+      return {
+        ...state,
+        byID: { ...state.byID, [action.payload.id]: { ...action.payload } },
+      };
     case CHANGE_SEMESTER:
       return {
         ...state,
-        [action.payload.id]: { ...state[action.payload.id], ...action.payload.model },
+        byID: { ...state.byID, [action.payload.id]: { id: action.payload.id, ...action.payload.model } },
+      };
+    case CHANGE_LOADING_SEMESTER:
+      return {
+        ...state,
+        loading: action.state,
       };
     default:
       return state;
