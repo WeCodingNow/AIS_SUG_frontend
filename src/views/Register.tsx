@@ -2,23 +2,12 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useSelector } from '../store/store';
-import './styles/register.scss';
 import { HashToArray } from '../store/ais/types';
 
-import ais from '../store/ais/actions';
 import { SUCCESS } from '../store/loading/types';
+import ais from '../store/ais/actions';
 
-interface RegisterData {
-  username: string;
-  password: string;
-  firstName: string;
-  secondName: string;
-  thirdName?: string;
-  groupID: number;
-}
-
-const validationRegexp = /^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$/.compile();
-const checkIsEmail = (email: string) => (email.match(validationRegexp) && true) || false;
+import './styles/register.scss';
 
 const GroupsOptions: React.FC = () => {
   const groups = useSelector((s) => s.ais.group);
@@ -41,6 +30,18 @@ const GroupsOptions: React.FC = () => {
     </>
   );
 };
+
+interface RegisterData {
+  username: string;
+  password: string;
+  firstName: string;
+  secondName: string;
+  thirdName?: string;
+  groupID: number;
+}
+
+const validationRegexp = /^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$/.compile();
+const checkIsEmail = (email: string) => (email.match(validationRegexp) && true) || false;
 
 const RegistrationForm: React.FC = () => {
   const form = useForm<RegisterData>({ reValidateMode: 'onSubmit', validateCriteriaMode: 'all' });
