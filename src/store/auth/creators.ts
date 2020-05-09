@@ -1,16 +1,16 @@
-import { LoginInfo, AuthActionTypes, LOGOUT, LOGIN_SUCCESS, SIGNUP_SUCCESS } from './types';
+import { AuthActionTypes, LOGOUT, CHANGE_LOGIN_STATE, LOGGED_IN, LOGIN_ERROR } from './types';
 
-export function loginSuccess(loginInfo: LoginInfo): AuthActionTypes {
+export function loginSuccess(token: string): AuthActionTypes {
   return {
-    type: LOGIN_SUCCESS,
-    payload: loginInfo,
+    type: CHANGE_LOGIN_STATE,
+    payload: { loggedIn: LOGGED_IN, token: token },
   };
 }
 
-export function signupSuccess(loginInfo: LoginInfo): AuthActionTypes {
+export function loginError(): AuthActionTypes {
   return {
-    type: SIGNUP_SUCCESS,
-    payload: loginInfo,
+    type: CHANGE_LOGIN_STATE,
+    payload: { loggedIn: LOGIN_ERROR },
   };
 }
 

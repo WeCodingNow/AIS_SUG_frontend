@@ -46,6 +46,10 @@ class AisAPI extends API {
   get Cathedra() {
     return this.makeEntityEndpoint('cathedra');
   }
+
+  get SignIn() {
+    return this.makeEntityEndpoint('sign-in');
+  }
 }
 
 export default new AisAPI(Config.api.ais);

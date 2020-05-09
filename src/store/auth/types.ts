@@ -1,29 +1,23 @@
 import { Action } from 'redux';
 
-export interface LoginInfo {
-  username: string;
-  token: string;
-}
+export const UNLOGGED = 'UNLOGGED';
+export const LOGGED_IN = 'LOGGED_IN';
+export const LOGIN_ERROR = 'LOGIN_ERROR';
+
+type LoggedInState = typeof UNLOGGED | typeof LOGGED_IN | typeof LOGIN_ERROR;
 
 export interface AuthState {
-  loggedIn: boolean;
-  username: undefined | string;
-  token: undefined | string;
+  loggedIn: LoggedInState;
+  token?: string;
 }
 
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
-
+export const CHANGE_LOGIN_STATE = 'CHANGE_LOGIN_STATE';
 export const LOGOUT = 'TRY_LOGOUT';
 
-interface LoginSuccess extends Action<typeof LOGIN_SUCCESS> {
-  payload: LoginInfo;
+interface ChangeAuthState extends Action<typeof CHANGE_LOGIN_STATE> {
+  payload: AuthState;
 }
 
-interface SignupSuccess extends Action<typeof SIGNUP_SUCCESS> {
-  payload: LoginInfo;
-}
+type Logout = Action<typeof LOGOUT>;
 
-type TryLogoutAction = Action<typeof LOGOUT>;
-
-export type AuthActionTypes = LoginSuccess | SignupSuccess | TryLogoutAction;
+export type AuthActionTypes = Logout | ChangeAuthState;

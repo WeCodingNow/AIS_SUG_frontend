@@ -1,18 +1,15 @@
-import { AuthState, AuthActionTypes, LOGOUT, LOGIN_SUCCESS } from './types';
+import { AuthState, AuthActionTypes, UNLOGGED, LOGOUT, CHANGE_LOGIN_STATE } from './types';
 
 const initialState: AuthState = {
-  loggedIn: false,
-  username: undefined,
-  token: undefined,
+  loggedIn: UNLOGGED,
 };
 
 function authReducer(state: AuthState = initialState, action: AuthActionTypes): AuthState {
   switch (action.type) {
-    case LOGIN_SUCCESS:
+    case CHANGE_LOGIN_STATE:
       return {
-        loggedIn: true,
-        username: action.payload.username,
-        token: action.payload.token,
+        ...state,
+        ...action.payload,
       };
     case LOGOUT:
       return initialState;
