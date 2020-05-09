@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
 import Landing from './views/Landing';
@@ -13,13 +13,25 @@ import './App.css';
 import Registration from './views/Register';
 import { LOGGED_IN } from './store/auth/types';
 
+import AisAPI from './services/ais';
+
+import * as debug from './debug';
+
 const App: React.FC = () => {
   const isLogin = useSelector((state) => state.auth.loggedIn);
+  const token = useSelector((state) => state.auth.token);
+
+  useEffect(() => {
+    if (token) {
+      AisAPI.setToken(token);
+    }
+  }, [token]);
 
   return (
     <Router>
       <Header />
       <Switch>
+        {debug.enabled ? <Route exact path="/debug" component={Debug} /> : <></>}
         <Route exact path="/" component={() => (isLogin === LOGGED_IN ? <Redirect to="/cabinet" /> : <Landing />)} />
         <Route
           exact
@@ -34,7 +46,6 @@ const App: React.FC = () => {
           path="/university"
           component={() => (isLogin === LOGGED_IN ? <University /> : <Redirect to="/" />)}
         />
-        <Route exact path="/debug" component={Debug} />
         <Redirect to="/" />
       </Switch>
     </Router>

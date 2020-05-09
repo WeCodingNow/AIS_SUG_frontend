@@ -10,6 +10,8 @@ import auth from '../store/auth/actions';
 import './styles/header.scss';
 import { LOGGED_IN } from '../store/auth/types';
 
+import * as debug from '../debug';
+
 const Header: React.FC = () => {
   const loggedIn = useSelector((state) => state.auth.loggedIn);
 
@@ -19,6 +21,13 @@ const Header: React.FC = () => {
       <LinkContainer to="/">
         <Navbar.Brand>АИС СУГ</Navbar.Brand>
       </LinkContainer>
+      {debug.enabled ? (
+        <LinkContainer to="/debug">
+          <Nav.Link>Debug</Nav.Link>
+        </LinkContainer>
+      ) : (
+        <></>
+      )}
       {loggedIn === LOGGED_IN ? (
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">

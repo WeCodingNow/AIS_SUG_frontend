@@ -1,5 +1,6 @@
 import { Action } from 'redux';
-import { Model, HashTable, ChangeAction } from '../types';
+import { Model, ModelState, ChangeAction } from '../types';
+import { Loadable, LoadingAction } from '../../loading/types';
 
 export interface PureResidence {
   address: string;
@@ -20,7 +21,7 @@ export const toResidence = (data: any): Residence => ({
   studentIDs: data['students'].map((s: any) => s['id']),
 });
 
-export type ResidenceState = HashTable<Residence>;
+export interface ResidenceState extends ModelState<Residence>, Loadable {}
 
 export const PUT_RESIDENCE = 'PUT_RESIDENCE';
 export const CHANGE_RESIDENCE = 'CHANGE_RESIDENCE';
@@ -33,4 +34,7 @@ interface ChangeResidence extends Action<typeof CHANGE_RESIDENCE> {
   payload: ChangeAction<PureResidence>;
 }
 
-export type ResidenceActionTypes = PutResidence | ChangeResidence;
+export const CHANGE_LOADING_RESIDENCE = 'CHANGE_LOADING_RESIDENCE';
+export type ChangeLoadingResidence = LoadingAction<typeof CHANGE_LOADING_RESIDENCE>;
+
+export type ResidenceActionTypes = PutResidence | ChangeResidence | ChangeLoadingResidence;

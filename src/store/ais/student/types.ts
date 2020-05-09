@@ -1,5 +1,6 @@
 import { Action } from 'redux';
-import { Model, HashTable, ChangeAction } from '../types';
+import { Model, ModelState, ChangeAction } from '../types';
+import { Loadable, LoadingAction } from '../../loading/types';
 
 export interface PureStudent {
   name: string;
@@ -26,17 +27,19 @@ export const toStudent = (data: any): Student => ({
   markIDs: data['marks'].map((m: any) => m['id']),
 });
 
-export type StudentState = HashTable<Student>;
+export interface StudentState extends ModelState<Student>, Loadable {}
 
 export const PUT_STUDENT = 'PUT_STUDENT';
-export const CHANGE_STUDENT = 'CHANGE_STUDENT';
-
 interface PutStudent extends Action<typeof PUT_STUDENT> {
   payload: Student;
 }
 
+export const CHANGE_STUDENT = 'CHANGE_STUDENT';
 interface ChangeStudent extends Action<typeof CHANGE_STUDENT> {
   payload: ChangeAction<PureStudent>;
 }
 
-export type StudentActionTypes = PutStudent | ChangeStudent;
+export const CHANGE_LOADING_STUDENT = 'CHANGE_LOADING_STUDENT';
+export type ChangeLoadingStudent = LoadingAction<typeof CHANGE_LOADING_STUDENT>;
+
+export type StudentActionTypes = PutStudent | ChangeStudent | ChangeLoadingStudent;

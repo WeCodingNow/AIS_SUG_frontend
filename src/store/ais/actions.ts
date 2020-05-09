@@ -11,15 +11,17 @@ import student from './student/actions';
 import cathedra from './cathedra/actions';
 
 export default {
-  contact: { get: contact.getContact, getAll: contact.getContacts },
-  contactType: { get: contactType.getContactType, getAll: contactType.getContactTypes },
-  controlEvent: { get: controlEvent.getControlEvent, getAll: controlEvent.getControlEvents },
-  controlEventType: { get: controlEventType.getControlEventType, getAll: controlEventType.getControlEventTypes },
-  discipline: { get: discipline.getDiscipline, getAll: discipline.getDisciplines },
+  contact: { fill: contact.fillContact, fillAll: contact.fillContacts },
+  contactType: { fill: contactType.fillContactType, fillAll: contactType.fillContactTypes },
+  controlEvent: { fill: controlEvent.fillControlEvent, fillAll: controlEvent.fillControlEvents },
+  controlEventType: { fill: controlEventType.fillControlEventType, fillAll: controlEventType.fillControlEventTypes },
+  discipline: { fill: discipline.fillDiscipline, fillAll: discipline.fillDisciplines },
   group: { fill: group.fillGroup, fillAll: group.fillGroups },
-  mark: { get: mark.getMark, getAll: mark.getMarks },
-  residence: { get: residence.getResidence, getAll: residence.getResidences },
+
+  mark: { fill: mark.fillMark, fillAll: mark.fillMarks },
+
+  residence: { fill: residence.fillResidence, fillAll: residence.fillResidences },
   semester: { fill: semester.fillSemester, fillAll: semester.fillSemesters },
-  student: { get: student.getStudent, getAll: student.getStudents },
+  student: { fill: student.fillStudent, fillAll: student.fillStudents },
   cathedra: { fill: cathedra.fillCathedra, fillAll: cathedra.fillCathedras },
 };

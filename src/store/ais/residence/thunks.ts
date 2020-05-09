@@ -1,33 +1,13 @@
-import { ThunkAction } from 'redux-thunk';
+import { putResidence, changeResidenceLoadingState } from './creators';
 
-import { ResidenceActionTypes, Residence, toResidence } from './types';
-import { putResidence } from './creators';
-
-import { State } from '../../store';
 import AisAPI from '../../../services/ais';
+import { makeGetters, makePutters } from '../../general/thunks';
+import { toResidence } from './types';
 
-type ThunkResult<R> = ThunkAction<R, State, undefined, ResidenceActionTypes>;
+const { getOne, getAll } = makeGetters(AisAPI.Residence);
+const { putOne, putAll } = makePutters(putResidence, changeResidenceLoadingState, toResidence, {
+  getOne,
+  getAll,
+});
 
-export const getResidence = (id: number): ThunkResult<void> => async (dispatch) => {
-  try {
-    const resp = await AisAPI.Residence.Get(id);
-    const jsonedResp = await resp.json();
-
-    dispatch(putResidence(toResidence(jsonedResp)));
-  } catch (e) {
-    console.log(e);
-    console.log("couldn't get residence ", id);
-  }
-};
-
-export const getResidences = (): ThunkResult<void> => async (dispatch) => {
-  try {
-    const resp = await AisAPI.Residence.Get();
-    const jsonedResp = await resp.json();
-
-    jsonedResp.map((r: Residence) => dispatch(putResidence(toResidence(r))));
-  } catch (e) {
-    console.log(e);
-    console.log("couldn't get residences");
-  }
-};
+export { getOne as getResidence, getAll as getResidences, putOne as fillResidence, putAll as fillResidences };

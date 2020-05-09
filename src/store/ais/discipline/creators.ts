@@ -1,4 +1,12 @@
-import { DisciplineActionTypes, Discipline, PureDiscipline, PUT_DISCIPLINE, CHANGE_DISCIPLINE } from './types';
+import {
+  DisciplineActionTypes,
+  Discipline,
+  PureDiscipline,
+  PUT_DISCIPLINE,
+  CHANGE_DISCIPLINE,
+  CHANGE_LOADING_DISCIPLINE,
+} from './types';
+import { LoadingState } from '../../loading/types';
 
 export const putDiscipline = (discipline: Discipline): DisciplineActionTypes => ({
   type: PUT_DISCIPLINE,
@@ -11,4 +19,9 @@ export const changeDiscipline = (id: number, discipline: PureDiscipline): Discip
     id,
     model: discipline,
   },
+});
+
+export const changeDisciplineLoadingState = (state: LoadingState): DisciplineActionTypes => ({
+  type: CHANGE_LOADING_DISCIPLINE,
+  state: state,
 });

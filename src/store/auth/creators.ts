@@ -14,7 +14,7 @@ export function loginError(): AuthActionTypes {
   };
 }
 
-export function logout(): AuthActionTypes {
+export function logoutCreator(): AuthActionTypes {
   return {
     type: LOGOUT,
   };

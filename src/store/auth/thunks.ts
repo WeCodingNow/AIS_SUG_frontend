@@ -1,11 +1,14 @@
 import { ThunkAction } from 'redux-thunk';
-import { AuthActionTypes } from './types';
-import { loginSuccess, loginError } from './creators';
-import { State } from '../store';
 
 import AisAPI from '../../services/ais';
 
-type ThunkResult<R> = ThunkAction<R, State, undefined, AuthActionTypes>;
+import { State } from '../store';
+import { AuthActionTypes } from './types';
+import { loginSuccess, loginError, logoutCreator } from './creators';
+import { RoleActionTypes, toRole } from '../role/types';
+import { clearRole, putRole } from '../role/creators';
+
+type ThunkResult<R> = ThunkAction<R, State, undefined, AuthActionTypes | RoleActionTypes>;
 
 const validCreds = (username: string, password: string): boolean => username.length > 0 && password.length > 0;
 
@@ -14,7 +17,10 @@ export const login = (username: string, password: string): ThunkResult<void> => 
     try {
       const resp = await AisAPI.SignIn.Post({ username, password });
       if (resp.status === 200) {
-        const token = await resp.json();
+        const token = (await resp.json()).token;
+        const roleResp = await AisAPI.Role.withAuth('Bearer', token).Get();
+
+        dispatch(putRole(toRole(await roleResp.json())));
         dispatch(loginSuccess(token));
       } else {
         dispatch(loginError());
@@ -26,4 +32,9 @@ export const login = (username: string, password: string): ThunkResult<void> => 
     console.log('Invalid creds: ', { username, password });
     dispatch(loginError());
   }
+};
+
+export const logout = (): ThunkResult<void> => async (dispatch) => {
+  dispatch(clearRole());
+  dispatch(logoutCreator());
 };

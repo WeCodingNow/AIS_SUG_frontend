@@ -1,33 +1,13 @@
-import { ThunkAction } from 'redux-thunk';
+import { putMark, changeMarkLoadingState } from './creators';
 
-import { MarkActionTypes, Mark, toMark } from './types';
-import { putMark } from './creators';
-
-import { State } from '../../store';
 import AisAPI from '../../../services/ais';
+import { makeGetters, makePutters } from '../../general/thunks';
+import { toMark } from './types';
 
-type ThunkResult<R> = ThunkAction<R, State, undefined, MarkActionTypes>;
+const { getOne, getAll } = makeGetters(AisAPI.Mark);
+const { putOne, putAll } = makePutters(putMark, changeMarkLoadingState, toMark, {
+  getOne,
+  getAll,
+});
 
-export const getMark = (id: number): ThunkResult<void> => async (dispatch) => {
-  try {
-    const resp = await AisAPI.Mark.Get(id);
-    const jsonedResp = await resp.json();
-
-    dispatch(putMark(toMark(jsonedResp)));
-  } catch (e) {
-    console.log(e);
-    console.log("couldn't get mark ", id);
-  }
-};
-
-export const getMarks = (): ThunkResult<void> => async (dispatch) => {
-  try {
-    const resp = await AisAPI.Mark.Get();
-    const jsonedResp = await resp.json();
-
-    jsonedResp.map((m: Mark) => dispatch(putMark(toMark(m))));
-  } catch (e) {
-    console.log(e);
-    console.log("couldn't get marks");
-  }
-};
+export { getOne as getMark, getAll as getMarks, putOne as fillMark, putAll as fillMarks };

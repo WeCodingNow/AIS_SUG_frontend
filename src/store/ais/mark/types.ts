@@ -1,5 +1,6 @@
 import { Action } from 'redux';
-import { Model, HashTable, ChangeAction } from '../types';
+import { Model, ModelState, ChangeAction } from '../types';
+import { Loadable, LoadingAction } from '../../loading/types';
 
 export interface PureMark {
   date: Date;
@@ -20,17 +21,19 @@ export const toMark = (data: any): Mark => ({
   studentID: data['student']['id'],
 });
 
-export type MarkState = HashTable<Mark>;
+export interface MarkState extends ModelState<Mark>, Loadable {}
 
 export const PUT_MARK = 'PUT_MARK';
-export const CHANGE_MARK = 'CHANGE_MARK';
-
 interface PutMark extends Action<typeof PUT_MARK> {
   payload: Mark;
 }
 
+export const CHANGE_MARK = 'CHANGE_MARK';
 interface ChangeMark extends Action<typeof CHANGE_MARK> {
   payload: ChangeAction<PureMark>;
 }
 
-export type MarkActionTypes = PutMark | ChangeMark;
+export const CHANGE_LOADING_MARK = 'CHANGE_LOADING_MARK';
+export type ChangeLoadingMark = LoadingAction<typeof CHANGE_LOADING_MARK>;
+
+export type MarkActionTypes = PutMark | ChangeMark | ChangeLoadingMark;

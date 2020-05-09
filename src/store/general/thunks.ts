@@ -1,6 +1,7 @@
 import { ThunkAction } from 'redux-thunk';
-import { State } from '../store';
 import { Action } from 'redux';
+
+import { State } from '../store';
 import { LoadingState, LOADING, SUCCESS, FAILED } from '../loading/types';
 import EntityEndpoint from '../../services/entity_endpoint';
 

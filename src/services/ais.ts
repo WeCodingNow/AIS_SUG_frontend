@@ -50,6 +50,10 @@ class AisAPI extends API {
   get SignIn() {
     return this.makeEntityEndpoint('sign-in');
   }
+
+  get Role() {
+    return this.makeEntityEndpoint('role');
+  }
 }
 
 export default new AisAPI(Config.api.ais);

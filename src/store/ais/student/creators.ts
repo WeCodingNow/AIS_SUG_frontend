@@ -1,4 +1,5 @@
-import { StudentActionTypes, Student, PureStudent, PUT_STUDENT, CHANGE_STUDENT } from './types';
+import { StudentActionTypes, Student, PureStudent, PUT_STUDENT, CHANGE_STUDENT, CHANGE_LOADING_STUDENT } from './types';
+import { LoadingState } from '../../loading/types';
 
 export const putStudent = (student: Student): StudentActionTypes => ({
   type: PUT_STUDENT,
@@ -11,4 +12,9 @@ export const changeStudent = (id: number, student: PureStudent): StudentActionTy
     id,
     model: student,
   },
+});
+
+export const changeStudentLoadingState = (state: LoadingState): StudentActionTypes => ({
+  type: CHANGE_LOADING_STUDENT,
+  state: state,
 });

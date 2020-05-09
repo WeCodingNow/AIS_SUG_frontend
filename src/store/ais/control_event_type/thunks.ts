@@ -1,33 +1,18 @@
-import { ThunkAction } from 'redux-thunk';
+import { putControlEventType, changeControlEventTypeLoadingState } from './creators';
 
-import { ControlEventTypeActionTypes, ControlEventType, toControlEventType } from './types';
-import { putControlEventType } from './creators';
-
-import { State } from '../../store';
 import AisAPI from '../../../services/ais';
+import { makeGetters, makePutters } from '../../general/thunks';
+import { toControlEventType } from './types';
 
-type ThunkResult<R> = ThunkAction<R, State, undefined, ControlEventTypeActionTypes>;
+const { getOne, getAll } = makeGetters(AisAPI.ControlEventType);
+const { putOne, putAll } = makePutters(putControlEventType, changeControlEventTypeLoadingState, toControlEventType, {
+  getOne,
+  getAll,
+});
 
-export const getControlEventType = (id: number): ThunkResult<void> => async (dispatch) => {
-  try {
-    const resp = await AisAPI.ControlEventType.Get(id);
-    const jsonedResp = await resp.json();
-
-    dispatch(putControlEventType(toControlEventType(jsonedResp)));
-  } catch (e) {
-    console.log(e);
-    console.log("couldn't get control event type ", id);
-  }
-};
-
-export const getControlEventTypes = (): ThunkResult<void> => async (dispatch) => {
-  try {
-    const resp = await AisAPI.ControlEventType.Get();
-    const jsonedResp = await resp.json();
-
-    jsonedResp.map((c: ControlEventType) => dispatch(putControlEventType(toControlEventType(c))));
-  } catch (e) {
-    console.log(e);
-    console.log("couldn't get control event types");
-  }
+export {
+  getOne as getControlEventType,
+  getAll as getControlEventTypes,
+  putOne as fillControlEventType,
+  putAll as fillControlEventTypes,
 };

@@ -20,10 +20,7 @@ export const toSemester = (data: any): Semester => ({
   end: data['end'],
 
   groupIDs: data['groups'].map((g: any) => g['id']),
-  controlEventIDs: data['groups']
-    .flatMap((g: any) => g['students'])
-    .flatMap((st: any) => st['marks'])
-    .map((m: any) => m['control_event']['id']),
+  controlEventIDs: data['control_events'].map((ce: any) => ce['id']),
 });
 
 export interface SemesterState extends ModelState<Semester>, Loadable {}

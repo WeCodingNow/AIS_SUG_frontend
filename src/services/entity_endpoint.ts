@@ -11,6 +11,26 @@ export default class EntityEndpoint {
     });
   }
 
+  withHeaders(headers: any) {
+    if (!this.requestParams) {
+      this.requestParams = {};
+    }
+
+    this.requestParams = {
+      ...this.requestParams,
+      headers: {
+        ...this.requestParams.headers,
+        ...headers,
+      },
+    };
+
+    return this;
+  }
+
+  withAuth(kind: string, token: string) {
+    return this.withHeaders({ Authorization: `${kind} ${token}` });
+  }
+
   Get(id?: number): Promise<Response> {
     return this.fetchWithParams('GET', `${this.entityEndpoint}${id ? `/${id}` : ''}`);
   }

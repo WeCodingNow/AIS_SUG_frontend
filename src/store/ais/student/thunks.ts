@@ -1,33 +1,13 @@
-import { ThunkAction } from 'redux-thunk';
+import { putStudent, changeStudentLoadingState } from './creators';
 
-import { StudentActionTypes, Student, toStudent } from './types';
-import { putStudent } from './creators';
-
-import { State } from '../../store';
 import AisAPI from '../../../services/ais';
+import { makeGetters, makePutters } from '../../general/thunks';
+import { toStudent } from './types';
 
-type ThunkResult<R> = ThunkAction<R, State, undefined, StudentActionTypes>;
+const { getOne, getAll } = makeGetters(AisAPI.Student);
+const { putOne, putAll } = makePutters(putStudent, changeStudentLoadingState, toStudent, {
+  getOne,
+  getAll,
+});
 
-export const getStudent = (id: number): ThunkResult<void> => async (dispatch) => {
-  try {
-    const resp = await AisAPI.Student.Get(id);
-    const jsonedResp = await resp.json();
-
-    dispatch(putStudent(toStudent(jsonedResp)));
-  } catch (e) {
-    console.log(e);
-    console.log("couldn't get student ", id);
-  }
-};
-
-export const getStudents = (): ThunkResult<void> => async (dispatch) => {
-  try {
-    const resp = await AisAPI.Student.Get();
-    const jsonedResp = await resp.json();
-
-    jsonedResp.map((s: Student) => dispatch(putStudent(toStudent(s))));
-  } catch (e) {
-    console.log(e);
-    console.log("couldn't get students");
-  }
-};
+export { getOne as getStudent, getAll as getStudents, putOne as fillStudent, putAll as fillStudents };
