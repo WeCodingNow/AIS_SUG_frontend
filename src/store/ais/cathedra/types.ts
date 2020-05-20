@@ -1,6 +1,6 @@
 import { Action } from 'redux';
 
-import { Model, ChangeAction, ModelState } from '../types';
+import { Model, ChangeAction, ModelState } from '../../types';
 import { LoadingAction, Loadable } from '../../loading/types';
 
 export interface PureCathedra {

@@ -1,5 +1,5 @@
 import { Action } from 'redux';
-import { Model, ModelState, ChangeAction } from '../types';
+import { Model, ModelState, ChangeAction } from '../../types';
 import { Loadable, LoadingAction } from '../../loading/types';
 
 export interface PureResidence {

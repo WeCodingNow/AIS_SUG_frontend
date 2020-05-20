@@ -23,6 +23,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (token) {
+      console.log('setting token');
       AisAPI.setToken(token);
     }
   }, [token]);

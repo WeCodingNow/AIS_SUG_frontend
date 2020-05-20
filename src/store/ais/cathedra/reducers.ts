@@ -1,10 +1,14 @@
 import { CathedraState, CathedraActionTypes, PUT_CATHEDRA, CHANGE_CATHEDRA, CHANGE_LOADING_CATHEDRA } from './types';
+import { GeneralAISActionType, CLEAR_AIS } from '../../types';
 
 const initialState: CathedraState = {
   byID: {},
 };
 
-export default function cathedraReducer(state: CathedraState = initialState, action: CathedraActionTypes) {
+export default function cathedraReducer(
+  state: CathedraState = initialState,
+  action: CathedraActionTypes | GeneralAISActionType,
+) {
   switch (action.type) {
     case PUT_CATHEDRA:
       return {
@@ -21,6 +25,8 @@ export default function cathedraReducer(state: CathedraState = initialState, act
         ...state,
         loading: action.state,
       };
+    case CLEAR_AIS:
+      return initialState;
     default:
       return state;
   }

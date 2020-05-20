@@ -1,10 +1,14 @@
 import { SemesterState, SemesterActionTypes, PUT_SEMESTER, CHANGE_SEMESTER, CHANGE_LOADING_SEMESTER } from './types';
+import { GeneralAISActionType, CLEAR_AIS } from '../../types';
 
 const initialState: SemesterState = {
   byID: {},
 };
 
-export default function semesterReducer(state: SemesterState = initialState, action: SemesterActionTypes) {
+export default function semesterReducer(
+  state: SemesterState = initialState,
+  action: SemesterActionTypes | GeneralAISActionType,
+) {
   switch (action.type) {
     case PUT_SEMESTER:
       return {
@@ -21,6 +25,8 @@ export default function semesterReducer(state: SemesterState = initialState, act
         ...state,
         loading: action.state,
       };
+    case CLEAR_AIS:
+      return initialState;
     default:
       return state;
   }

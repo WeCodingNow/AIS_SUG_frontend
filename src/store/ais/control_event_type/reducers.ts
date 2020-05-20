@@ -5,6 +5,7 @@ import {
   CHANGE_CONTROL_EVENT_TYPE,
   CHANGE_LOADING_CONTROL_EVENT_TYPE,
 } from './types';
+import { GeneralAISActionType, CLEAR_AIS } from '../../types';
 
 const initialState: ControlEventTypeState = {
   byID: {},
@@ -12,7 +13,7 @@ const initialState: ControlEventTypeState = {
 
 export default function controlEventTypeReducer(
   state: ControlEventTypeState = initialState,
-  action: ControlEventTypeActionTypes,
+  action: ControlEventTypeActionTypes | GeneralAISActionType,
 ) {
   switch (action.type) {
     case PUT_CONTROL_EVENT_TYPE:
@@ -30,6 +31,8 @@ export default function controlEventTypeReducer(
         ...state,
         loading: action.state,
       };
+    case CLEAR_AIS:
+      return initialState;
     default:
       return state;
   }

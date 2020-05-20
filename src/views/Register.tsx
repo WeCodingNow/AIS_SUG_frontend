@@ -2,29 +2,32 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useSelector } from '../store/store';
-import { HashToArray } from '../store/ais/types';
+import { HashToArray, HashTable } from '../store/types';
 
 import { SUCCESS } from '../store/loading/types';
 import ais from '../store/ais/actions';
 
 import './styles/register.scss';
+import { makeCurrentSemesterGetter } from '../utils/funcs';
+import { Group } from '../store/ais/group/types';
+import { Semester } from '../store/ais/semester/types';
+import { Cathedra } from '../store/ais/cathedra/types';
 
-const GroupsOptions: React.FC = () => {
-  const groups = useSelector((s) => s.ais.group);
-  const semesters = useSelector((s) => s.ais.semester);
-  const cathedras = useSelector((s) => s.ais.cathedra);
-  const groupsArray = HashToArray(groups.byID);
+interface GroupsOptionsProps {
+  groups: HashTable<Group>;
+  cathedras: HashTable<Cathedra>;
+  semesters: HashTable<Semester>;
+}
 
-  const getMaxSemesterNumber = (groupID: number) =>
-    groups.byID[groupID].semesterIDs
-      .map((semID) => semesters.byID[semID].number)
-      .reduce((prevSemN, curSemN) => (prevSemN > curSemN ? prevSemN : curSemN));
+const GroupsOptions: React.FC<GroupsOptionsProps> = ({ groups, cathedras, semesters }: GroupsOptionsProps) => {
+  const groupsArray = HashToArray(groups);
+  const getCurrentSemesterNumber = makeCurrentSemesterGetter(groups, semesters);
 
   return (
     <>
       {groupsArray.map((g) => (
         <option key={g.id} value={g.id}>
-          {`${cathedras.byID[g.cathedraID].shortName}-${getMaxSemesterNumber(g.id)}${g.number}`}
+          {`${cathedras[g.cathedraID].shortName}-${getCurrentSemesterNumber(g.id)}${g.number}`}
         </option>
       ))}
     </>
@@ -83,7 +86,7 @@ const RegistrationForm: React.FC = () => {
           <label htmlFor="input-name">Группа</label>
           {(groups.loading === SUCCESS && semesters.loading === SUCCESS && cathedras.loading === SUCCESS && (
             <select className="custom-select my-1 mr-sm-2" name="group-id" ref={register()}>
-              <GroupsOptions />
+              <GroupsOptions groups={groups.byID} cathedras={cathedras.byID} semesters={semesters.byID} />
             </select>
           )) || <span>LOADING</span>}
 

@@ -7,8 +7,10 @@ import { AuthActionTypes } from './types';
 import { loginSuccess, loginError, logoutCreator } from './creators';
 import { RoleActionTypes, toRole } from '../role/types';
 import { clearRole, putRole } from '../role/creators';
+import { clearAIS } from '../creators';
+import { GeneralAISActionType } from '../types';
 
-type ThunkResult<R> = ThunkAction<R, State, undefined, AuthActionTypes | RoleActionTypes>;
+type ThunkResult<R> = ThunkAction<R, State, undefined, AuthActionTypes | RoleActionTypes | GeneralAISActionType>;
 
 const validCreds = (username: string, password: string): boolean => username.length > 0 && password.length > 0;
 
@@ -35,6 +37,7 @@ export const login = (username: string, password: string): ThunkResult<void> => 
 };
 
 export const logout = (): ThunkResult<void> => async (dispatch) => {
+  dispatch(clearAIS());
   dispatch(clearRole());
   dispatch(logoutCreator());
 };

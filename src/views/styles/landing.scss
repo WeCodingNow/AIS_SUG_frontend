@@ -1,7 +1,7 @@
 @import 'views.scss';
 
 .landing-view {
-  @include view;
+  @include view(0em, 0em);
 
   .btn-toolbar.login-button-bar {
     justify-content: space-evenly;

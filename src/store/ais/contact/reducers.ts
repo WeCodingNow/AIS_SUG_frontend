@@ -1,10 +1,14 @@
 import { ContactState, ContactActionTypes, PUT_CONTACT, CHANGE_CONTACT, CHANGE_LOADING_CONTACT } from './types';
+import { GeneralAISActionType, CLEAR_AIS } from '../../types';
 
 const initialState: ContactState = {
   byID: {},
 };
 
-export default function contactReducer(state: ContactState = initialState, action: ContactActionTypes) {
+export default function contactReducer(
+  state: ContactState = initialState,
+  action: ContactActionTypes | GeneralAISActionType,
+) {
   switch (action.type) {
     case PUT_CONTACT: {
       return {
@@ -22,6 +26,8 @@ export default function contactReducer(state: ContactState = initialState, actio
         ...state,
         loading: action.state,
       };
+    case CLEAR_AIS:
+      return initialState;
     default:
       return state;
   }

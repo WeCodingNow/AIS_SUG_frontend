@@ -5,12 +5,16 @@ import {
   CHANGE_RESIDENCE,
   CHANGE_LOADING_RESIDENCE,
 } from './types';
+import { GeneralAISActionType, CLEAR_AIS } from '../../types';
 
 const initialState: ResidenceState = {
   byID: {},
 };
 
-export default function residenceReducer(state: ResidenceState = initialState, action: ResidenceActionTypes) {
+export default function residenceReducer(
+  state: ResidenceState = initialState,
+  action: ResidenceActionTypes | GeneralAISActionType,
+) {
   switch (action.type) {
     case PUT_RESIDENCE:
       return {
@@ -27,6 +31,8 @@ export default function residenceReducer(state: ResidenceState = initialState, a
         ...state,
         loading: action.state,
       };
+    case CLEAR_AIS:
+      return initialState;
     default:
       return state;
   }

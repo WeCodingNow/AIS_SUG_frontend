@@ -5,12 +5,16 @@ import {
   CHANGE_DISCIPLINE,
   CHANGE_LOADING_DISCIPLINE,
 } from './types';
+import { GeneralAISActionType, CLEAR_AIS } from '../../types';
 
 const initialState: DisciplineState = {
   byID: {},
 };
 
-export default function disciplineReducer(state: DisciplineState = initialState, action: DisciplineActionTypes) {
+export default function disciplineReducer(
+  state: DisciplineState = initialState,
+  action: DisciplineActionTypes | GeneralAISActionType,
+) {
   switch (action.type) {
     case PUT_DISCIPLINE:
       return {
@@ -27,6 +31,8 @@ export default function disciplineReducer(state: DisciplineState = initialState,
         ...state,
         loading: action.state,
       };
+    case CLEAR_AIS:
+      return initialState;
     default:
       return state;
   }

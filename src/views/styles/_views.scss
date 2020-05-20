@@ -1,3 +1,19 @@
-@mixin view {
+@mixin view($margin-top-value: 2em, $margin-bottom-value: 2em) {
   height: 100%;
+
+  .content {
+    margin: $margin-top-value 0 0;
+    height: calc(100% - #{$margin-top-value});
+  }
+
+  .header {
+    margin: $margin-top-value 0 $margin-bottom-value 0;
+    text-align: center;
+    size: 10px;
+
+    .text {
+      display: inline;
+      font-size: xx-large;
+    }
+  }
 }

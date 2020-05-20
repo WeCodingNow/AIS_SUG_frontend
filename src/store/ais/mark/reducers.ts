@@ -1,10 +1,11 @@
 import { MarkState, MarkActionTypes, PUT_MARK, CHANGE_MARK, CHANGE_LOADING_MARK } from './types';
+import { GeneralAISActionType, CLEAR_AIS } from '../../types';
 
 const initialState: MarkState = {
   byID: {},
 };
 
-export default function markReducer(state: MarkState = initialState, action: MarkActionTypes) {
+export default function markReducer(state: MarkState = initialState, action: MarkActionTypes | GeneralAISActionType) {
   switch (action.type) {
     case PUT_MARK:
       return {
@@ -21,6 +22,8 @@ export default function markReducer(state: MarkState = initialState, action: Mar
         ...state,
         loading: action.state,
       };
+    case CLEAR_AIS:
+      return initialState;
     default:
       return state;
   }

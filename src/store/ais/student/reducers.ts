@@ -1,10 +1,14 @@
 import { StudentState, StudentActionTypes, PUT_STUDENT, CHANGE_STUDENT, CHANGE_LOADING_STUDENT } from './types';
+import { GeneralAISActionType, CLEAR_AIS } from '../../types';
 
 const initialState: StudentState = {
   byID: {},
 };
 
-export default function studentReducer(state: StudentState = initialState, action: StudentActionTypes) {
+export default function studentReducer(
+  state: StudentState = initialState,
+  action: StudentActionTypes | GeneralAISActionType,
+) {
   switch (action.type) {
     case PUT_STUDENT:
       return {
@@ -21,6 +25,8 @@ export default function studentReducer(state: StudentState = initialState, actio
         ...state,
         loading: action.state,
       };
+    case CLEAR_AIS:
+      return initialState;
     default:
       return state;
   }

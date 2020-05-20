@@ -54,6 +54,10 @@ class AisAPI extends API {
   get Role() {
     return this.makeEntityEndpoint('role');
   }
+
+  get StudentRoles() {
+    return this.makeEntityEndpoint('student_users');
+  }
 }
 
 export default new AisAPI(Config.api.ais);

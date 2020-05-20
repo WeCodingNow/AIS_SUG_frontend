@@ -1,5 +1,5 @@
 import { Action } from 'redux';
-import { Model } from '../ais/types';
+import { Model } from '../types';
 
 export interface PureRole {
   def: string;
