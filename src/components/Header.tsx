@@ -18,7 +18,7 @@ import * as debug from '../debug';
 import './styles/header.scss';
 
 const Header: React.FC = () => {
-  const role = useSelector((state) => state.role.role);
+  const role = useSelector((state) => state.me.role);
 
   return (
     <Navbar bg="dark" variant="dark" sticky="top">

@@ -9,6 +9,7 @@ export interface PureSemester {
 
   groupIDs: Array<number>;
   controlEventIDs: Array<number>;
+  disciplineIDs: Array<number>;
 }
 
 export interface Semester extends Model, PureSemester {}
@@ -21,6 +22,7 @@ export const toSemester = (data: any): Semester => ({
 
   groupIDs: data['groups'].map((g: any) => g['id']),
   controlEventIDs: data['control_events'].map((ce: any) => ce['id']),
+  disciplineIDs: data['disciplines'].map((d: any) => d['id']),
 });
 
 export interface SemesterState extends ModelState<Semester>, Loadable {}

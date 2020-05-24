@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 
 import authReducer from './auth/reducers';
 import aisReducer from './ais/reducer';
-import roleReducer from './role/reducer';
+import meReducer from './me/reducer';
 import adminReducer from './admin/reducers';
 import { persistReducer } from 'redux-persist';
 
@@ -17,7 +17,7 @@ const authPersistConfig = {
 const reducer = combineReducers({
   auth: persistReducer(authPersistConfig, authReducer),
   ais: aisReducer,
-  role: roleReducer,
+  me: meReducer,
   admin: adminReducer,
 });
 

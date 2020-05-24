@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
 import ais from '../store/ais/actions';
-import role from '../store/role/actions';
+import role from '../store/me/actions';
 
 import Container from 'react-bootstrap/Container';
 import { useSelector } from '../store/store';
+import { getStudentShortname } from '../utils/funcs';
+import { SUCCESS } from '../store/loading/types';
 
 interface EntityGetterProps {
   entity: string;
@@ -46,7 +48,12 @@ const EntityGetter: React.FC<EntityGetterProps> = ({ entity, getter, allGetter }
 };
 
 const Debug: React.FC = () => {
-  const roleState = useSelector((s) => s.role.role);
+  const meState = useSelector((s) => s.me);
+  const students = useSelector((s) => s.ais.student);
+
+  useEffect(() => {
+    ais.student.fillAll();
+  }, []);
 
   return (
     <Container fluid>
@@ -81,7 +88,7 @@ const Debug: React.FC = () => {
               getter: () => {
                 console.log('bass');
               },
-              allGetter: role.fill,
+              allGetter: role.fillRole,
             },
           ].map((desc, i) => (
             <Row key={i}>
@@ -90,10 +97,17 @@ const Debug: React.FC = () => {
           ))}
         </Col>
         <Col>
-          {roleState ? (
-            <span>
-              Роль ид {roleState.id} название {roleState.def}
-            </span>
+          {meState.role ? <div>Роль ид {meState.role.id}</div> : <></>}
+          {meState.info ? (
+            <div>
+              <div>Юзер ид {meState.info.userID}</div>
+              <div>Студент ид {meState.info.studentID ?? 'Нету'}</div>
+              {meState.info.studentID && students.loading === SUCCESS ? (
+                <div>Студент {getStudentShortname(students.byID[meState.info.studentID])}</div>
+              ) : (
+                <></>
+              )}
+            </div>
           ) : (
             <></>
           )}

@@ -1,0 +1,10 @@
+@import 'views.scss';
+
+.university-view {
+  @include view;
+
+  .selected-discipline {
+    background-color: black;
+    color: white;
+  }
+}

@@ -55,6 +55,10 @@ class AisAPI extends API {
     return this.makeEntityEndpoint('role');
   }
 
+  get Info() {
+    return this.makeEntityEndpoint('info');
+  }
+
   get Roles() {
     return this.makeEntityEndpoint('roles');
   }

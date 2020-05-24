@@ -7,6 +7,7 @@ export interface PureDiscipline {
   hours: number;
 
   controlEventIDs: Array<number>;
+  semesters: Array<number>;
 }
 
 export interface Discipline extends Model, PureDiscipline {}
@@ -17,6 +18,7 @@ export const toDiscipline = (data: any): Discipline => ({
   hours: data['hours'],
 
   controlEventIDs: data['control_events'].map((ce: any) => ce['id']),
+  semesters: data['semesters'].map((s: any) => s['id']),
 });
 
 export interface DisciplineState extends ModelState<Discipline>, Loadable {}

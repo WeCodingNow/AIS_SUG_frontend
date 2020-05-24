@@ -1,13 +1,14 @@
-import { HashTable } from '../store/types';
+import { HashTable, HashToArray } from '../store/types';
 import { Semester } from '../store/ais/semester/types';
 import { Group } from '../store/ais/group/types';
 import { Cathedra } from '../store/ais/cathedra/types';
 import { Student } from '../store/ais/student/types';
 
+export const getLastSemester = (semesters: HashTable<Semester>) =>
+  HashToArray(semesters).sort((lhs, rhs) => (lhs.number < rhs.number ? 1 : lhs.number === rhs.number ? 0 : -1))[0];
+
 export const getCurrentSemesterNumber = (groupID: number, groups: HashTable<Group>, semesters: HashTable<Semester>) =>
-  groups[groupID].semesterIDs
-    .map((semID) => semesters[semID].number)
-    .reduce((prevSemN, curSemN) => (prevSemN > curSemN ? prevSemN : curSemN));
+  getLastSemester(groups[groupID].semesterIDs.map((semID) => semesters[semID])).number;
 
 export const makeCurrentSemesterGetter = (groups: HashTable<Group>, semesters: HashTable<Semester>) => (
   groupID: number,

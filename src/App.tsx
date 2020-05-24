@@ -16,7 +16,7 @@ import { LOGGED_IN } from './store/auth/types';
 import AisAPI from './services/ais';
 
 import auth from './store/auth/actions';
-import roleActions from './store/role/actions';
+import roleActions from './store/me/actions';
 
 import * as debug from './debug';
 import { studentID } from './roles';
@@ -28,12 +28,12 @@ const App: React.FC = () => {
   useEffect(() => {
     if (token) {
       AisAPI.setToken(token);
-      roleActions.fill();
+      roleActions.fillRole();
       auth.tokenSetSuccess();
     }
   }, [token]);
 
-  const role = useSelector((st) => st.role.role);
+  const role = useSelector((st) => st.me.role);
 
   return (
     <Router>

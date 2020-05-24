@@ -17,7 +17,7 @@ const roleViews: RoleViewsType = {
 };
 
 const Cabinet: React.FC = () => {
-  const role = useSelector((st) => st.role.role);
+  const role = useSelector((st) => st.me.role);
 
   return (
     <div className="cabinet-view container fluid">

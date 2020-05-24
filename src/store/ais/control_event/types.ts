@@ -8,6 +8,7 @@ export interface PureControlEvent {
   disciplineID: number;
   semesterID: number;
   markIDs: Array<number>;
+  typeID: number;
 }
 
 export interface ControlEvent extends Model, PureControlEvent {}
@@ -19,6 +20,7 @@ export const toControlEvent = (data: any): ControlEvent => ({
   disciplineID: data['discipline']['id'],
   semesterID: data['semester']['id'],
   markIDs: data['marks'].map((m: any) => m['id']),
+  typeID: data['type']['id'],
 });
 
 export interface ControlEventState extends ModelState<ControlEvent>, Loadable {}
