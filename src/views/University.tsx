@@ -1,115 +1,19 @@
 import React, { useEffect, useState } from 'react';
+import { shallowEqual } from 'react-redux';
 
-import ais from '../store/ais/actions';
+import Dropdown from 'react-bootstrap/Dropdown';
+
 import { useSelector } from '../store/store';
 import { HashTable, HashToArray } from '../store/types';
+import ais from '../store/ais/actions';
 import { Discipline } from '../store/ais/discipline/types';
-
-import './styles/university.scss';
-import { shallowEqual } from 'react-redux';
-import Dropdown from 'react-bootstrap/Dropdown';
 import { ControlEvent } from '../store/ais/control_event/types';
 import { Mark } from '../store/ais/mark/types';
-import { SUCCESS } from '../store/loading/types';
-// import { Mark } from '../store/ais/mark/types';
 
-interface AvgMarkObj {
-  [id: string]: number;
-}
+import { AvgMarkObj, DisciplinesTable } from '../components/DisciplinesTable';
+import { MarksTable } from '../components/MarksTable';
 
-interface DisciplinesTableProps {
-  disciplines: HashTable<Discipline>;
-  averages: AvgMarkObj;
-  selectedDisciplineID?: number;
-  callback?: (discID?: number) => void;
-}
-
-export const DisciplinesTable: React.FC<DisciplinesTableProps> = ({
-  disciplines,
-  averages,
-  selectedDisciplineID,
-  callback,
-}) => {
-  return (
-    <table className="table">
-      <thead>
-        <tr>
-          <th scope="col">Дисциплина</th>
-          <th scope="col">Средний балл</th>
-        </tr>
-      </thead>
-      <tbody>
-        {HashToArray(disciplines).map((ind) => (
-          <tr
-            key={ind.id}
-            className={selectedDisciplineID && ind.id === selectedDisciplineID ? 'selected-discipline' : ''}
-          >
-            <th
-              scope="row"
-              onClick={
-                callback
-                  ? () => {
-                      callback(ind.id);
-                    }
-                  : undefined
-              }
-            >
-              {ind.name}
-            </th>
-            <th>{(averages[ind.id] ?? 0).toString().slice(0, 4)}</th>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
-};
-
-interface MarksTableProps {
-  marks: Array<Mark>;
-  disciplineID?: number;
-}
-
-export const MarksTable: React.FC<MarksTableProps> = ({ marks, disciplineID }) => {
-  const controlEvents = useSelector((s) => s.ais.controlEvent.byID);
-  const disciplines = useSelector((s) => s.ais.discipline.byID);
-
-  const ceTypes = useSelector((s) => s.ais.controlEventType);
-
-  useEffect(() => {
-    ais.controlEventType.fillAll();
-  }, []);
-
-  return (
-    <table className="table">
-      <thead>
-        <tr>
-          <th scope="col">Тип</th>
-          <th scope="col">Оценка</th>
-          <th scope="col">Дата получения</th>
-          {disciplineID === undefined ? <th scope="col">Дисциплина</th> : <></>}
-        </tr>
-      </thead>
-      <tbody>
-        {marks.map((m) => (
-          <tr key={m.id}>
-            <th>
-              {ceTypes.loading === SUCCESS
-                ? ceTypes.byID[controlEvents[m.controlEventID].typeID].def
-                : 'узнаём тип КМ...'}
-            </th>
-            <th scope="row">{m.value}</th>
-            <th>{m.date}</th>
-            {disciplineID === undefined ? (
-              <th>{disciplines[controlEvents[m.controlEventID].disciplineID].name}</th>
-            ) : (
-              <></>
-            )}
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
-};
+import './styles/university.scss';
 
 const University: React.FC = () => {
   const [selectedSemesterID, setSelectedSemesterID] = useState(0);
@@ -230,15 +134,15 @@ const University: React.FC = () => {
           <div>loading disciplines</div>
         )}
       </div>
+      <div className="row">Оценки</div>
       <div className="row">
-        Оценки
-        <span>
-          {selectedDisciplineID ? (
-            <button onClick={() => setSelectedDisciplineID(undefined)}>Показать все</button>
-          ) : (
-            <></>
-          )}
-        </span>
+        {selectedDisciplineID ? (
+          <button type="button" className="btn btn-dark" onClick={() => setSelectedDisciplineID(undefined)}>
+            Показать все
+          </button>
+        ) : (
+          <></>
+        )}
       </div>
       <div className="row">
         <MarksTable
