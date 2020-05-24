@@ -3,43 +3,46 @@ import React from 'react';
 import { HashToArray, HashTable } from '../store/types';
 
 import { Student } from '../store/ais/student/types';
-// import { Group } from '../store/ais/group/types';
-// import { Semester } from '../store/ais/semester/types';
-// import { Cathedra } from '../store/ais/cathedra/types';
-
-// import { makeCurrentSemesterGetter } from '../utils/funcs';
+import { StudentBinding } from '../store/admin/types';
+import { Role } from '../store/admin/types';
+import PromoteUserButtonGroup from './PromoteUserButtonGroup';
+import { getStudentShortname } from '../utils/funcs';
 
 interface AdminUserTableProps {
+  bindings: HashTable<StudentBinding>;
   students: HashTable<Student>;
-  //   groups: HashTable<Group>;
-  //   cathedras: HashTable<Cathedra>;
-  //   semesters: HashTable<Semester>;
+  roles: HashTable<Role>;
 }
 
-const AdminUserTable: React.FC<AdminUserTableProps> = ({ students }: AdminUserTableProps) => {
-  const studentsMap = HashToArray(students);
+const AdminUserTable: React.FC<AdminUserTableProps> = ({ bindings, students, roles }) => {
+  const studentBindings = HashToArray(bindings);
 
   return (
     <table className="table">
       <thead>
         <tr>
-          <th scope="col">id</th>
-          <th scope="col">Фамилия</th>
-          <th scope="col">Имя</th>
-          <th scope="col">Отчество</th>
-          <th scope="col">Группа</th>
+          <th scope="col">Студент</th>
+          <th scope="col">Роль</th>
+          <th scope="col">Повысить</th>
         </tr>
       </thead>
       <tbody>
-        {studentsMap.map((st) => (
-          <tr key={st.id}>
-            <th scope="row">{st.id}</th>
-            <td>{st.secondName}</td>
-            <td>{st.name}</td>
-            <td>{st.thirdName || ''}</td>
-            {/* <td>{`${cathedras[groups[st.groupID].cathedraID].shortName} - ${getCurrentSemesterNumber(st.groupID)}${ */}
-            {/* groups[st.groupID].number */}
-            {/* }`}</td> */}
+        {studentBindings.map((stb) => (
+          <tr key={stb.studentID}>
+            <th scope="row">{getStudentShortname(students[stb.studentID])}</th>
+            <td>{stb.roleID ? roles[stb.roleID].def : 'NA'}</td>
+            <td>
+              {stb.roleID ? (
+                <PromoteUserButtonGroup
+                  bindings={bindings}
+                  roles={roles}
+                  studentID={stb.studentID}
+                  userID={stb.userID as number}
+                />
+              ) : (
+                <></>
+              )}
+            </td>
           </tr>
         ))}
       </tbody>

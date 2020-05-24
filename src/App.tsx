@@ -15,7 +15,11 @@ import { LOGGED_IN } from './store/auth/types';
 
 import AisAPI from './services/ais';
 
+import auth from './store/auth/actions';
+import roleActions from './store/role/actions';
+
 import * as debug from './debug';
+import { studentID } from './roles';
 
 const App: React.FC = () => {
   const isLogin = useSelector((state) => state.auth.loggedIn);
@@ -23,10 +27,13 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (token) {
-      console.log('setting token');
       AisAPI.setToken(token);
+      roleActions.fill();
+      auth.tokenSetSuccess();
     }
   }, [token]);
+
+  const role = useSelector((st) => st.role.role);
 
   return (
     <Router>
@@ -40,8 +47,16 @@ const App: React.FC = () => {
           component={() => (isLogin === LOGGED_IN ? <Redirect to="/cabinet" /> : <Registration />)}
         />
         <Route exact path="/cabinet" component={() => (isLogin === LOGGED_IN ? <Cabinet /> : <Redirect to="/" />)} />
-        <Route exact path="/groups" component={() => (isLogin === LOGGED_IN ? <Groups /> : <Redirect to="/" />)} />
-        <Route exact path="/students" component={() => (isLogin === LOGGED_IN ? <Students /> : <Redirect to="/" />)} />
+        <Route
+          exact
+          path="/groups"
+          component={() => (isLogin === LOGGED_IN && role?.id !== studentID ? <Groups /> : <Redirect to="/" />)}
+        />
+        <Route
+          exact
+          path="/students"
+          component={() => (isLogin === LOGGED_IN && role?.id !== studentID ? <Students /> : <Redirect to="/" />)}
+        />
         <Route
           exact
           path="/university"

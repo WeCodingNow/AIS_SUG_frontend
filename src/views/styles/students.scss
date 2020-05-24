@@ -1,0 +1,5 @@
+@import 'views.scss';
+
+.students-view {
+  @include view;
+}

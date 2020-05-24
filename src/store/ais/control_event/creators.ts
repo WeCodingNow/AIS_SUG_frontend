@@ -6,6 +6,7 @@ import {
   CHANGE_CONTROL_EVENT,
   CHANGE_LOADING_CONTROL_EVENT,
 } from './types';
+
 import { LoadingState } from '../../loading/types';
 
 export const putControlEvent = (controlEvent: ControlEvent): ControlEventActionTypes => ({

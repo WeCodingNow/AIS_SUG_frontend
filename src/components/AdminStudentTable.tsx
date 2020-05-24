@@ -7,7 +7,7 @@ import { Group } from '../store/ais/group/types';
 import { Semester } from '../store/ais/semester/types';
 import { Cathedra } from '../store/ais/cathedra/types';
 
-import { makeCurrentSemesterGetter } from '../utils/funcs';
+import { makeGroupName } from '../utils/funcs';
 
 interface AdminStudentTableProps {
   students: HashTable<Student>;
@@ -23,7 +23,6 @@ const AdminStudentTable: React.FC<AdminStudentTableProps> = ({
   semesters,
 }: AdminStudentTableProps) => {
   const studentsMap = HashToArray(students);
-  const getCurrentSemesterNumber = makeCurrentSemesterGetter(groups, semesters);
 
   return (
     <table className="table">
@@ -43,9 +42,10 @@ const AdminStudentTable: React.FC<AdminStudentTableProps> = ({
             <td>{st.secondName}</td>
             <td>{st.name}</td>
             <td>{st.thirdName || ''}</td>
-            <td>{`${cathedras[groups[st.groupID].cathedraID].shortName} - ${getCurrentSemesterNumber(st.groupID)}${
+            {/* <td>{`${cathedras[groups[st.groupID].cathedraID].shortName} - ${getCurrentSemesterNumber(st.groupID)}${
               groups[st.groupID].number
-            }`}</td>
+            }`}</td> */}
+            <td>{makeGroupName(st.groupID, groups, semesters, cathedras)}</td>
           </tr>
         ))}
       </tbody>

@@ -9,7 +9,12 @@ type LoggedInState = typeof UNLOGGED | typeof LOGGED_IN | typeof LOGIN_ERROR;
 export interface AuthState {
   loggedIn: LoggedInState;
   token?: string;
+  tokenSet?: boolean;
 }
+
+export const SET_TOKEN_SUCCESS = 'SET_TOKEN_SUCCESS';
+
+type SetTokenSuccess = Action<typeof SET_TOKEN_SUCCESS>;
 
 export const CHANGE_LOGIN_STATE = 'CHANGE_LOGIN_STATE';
 export const LOGOUT = 'TRY_LOGOUT';
@@ -20,4 +25,4 @@ interface ChangeAuthState extends Action<typeof CHANGE_LOGIN_STATE> {
 
 type Logout = Action<typeof LOGOUT>;
 
-export type AuthActionTypes = Logout | ChangeAuthState;
+export type AuthActionTypes = Logout | ChangeAuthState | SetTokenSuccess;

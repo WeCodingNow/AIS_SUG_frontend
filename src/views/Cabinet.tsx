@@ -2,15 +2,13 @@ import React from 'react';
 
 import { useSelector } from '../store/store';
 
-import AdminCabinet from './AdminCabinet';
-import HeadmanCabinet from './HeadmanCabinet';
-import StudentCabinet from './StudentCabinet';
+import AdminCabinet from './Cabinet/AdminCabinet';
+import HeadmanCabinet from './Cabinet/HeadmanCabinet';
+import StudentCabinet from './Cabinet/StudentCabinet';
+
+import { RoleViewsType } from '../roles';
 
 import './styles/cabinet.scss';
-
-interface RoleViewsType {
-  [id: number]: JSX.Element;
-}
 
 const roleViews: RoleViewsType = {
   1: <AdminCabinet />,

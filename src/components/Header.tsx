@@ -7,13 +7,18 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { useSelector } from '../store/store';
 
 import auth from '../store/auth/actions';
-import './styles/header.scss';
-import { LOGGED_IN } from '../store/auth/types';
+
+import RBAC from './RBAC';
+import Auth from './Auth';
+
+import { adminID, headmanID } from '../roles';
 
 import * as debug from '../debug';
 
+import './styles/header.scss';
+
 const Header: React.FC = () => {
-  const loggedIn = useSelector((state) => state.auth.loggedIn);
+  const role = useSelector((state) => state.role.role);
 
   return (
     <Navbar bg="dark" variant="dark" sticky="top">
@@ -28,18 +33,20 @@ const Header: React.FC = () => {
       ) : (
         <></>
       )}
-      {loggedIn === LOGGED_IN ? (
+      <Auth>
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <LinkContainer to="students">
-              <Nav.Link>Студенты</Nav.Link>
-            </LinkContainer>
-            <LinkContainer to="groups">
-              <Nav.Link>Группы</Nav.Link>
-            </LinkContainer>
             <LinkContainer to="university">
               <Nav.Link>Университет</Nav.Link>
             </LinkContainer>
+            <RBAC roleID={role?.id} allowed={[adminID, headmanID]}>
+              <LinkContainer to="groups">
+                <Nav.Link>Группы</Nav.Link>
+              </LinkContainer>
+              <LinkContainer to="students">
+                <Nav.Link>Студенты</Nav.Link>
+              </LinkContainer>
+            </RBAC>
           </Nav>
           <NavDropdown title="Личный кабинет" id="basic-nav-dropdown">
             <NavDropdown.Item href="/cabinet">Открыть</NavDropdown.Item>
@@ -53,9 +60,7 @@ const Header: React.FC = () => {
             </NavDropdown.Item>
           </NavDropdown>
         </Navbar.Collapse>
-      ) : (
-        <></>
-      )}
+      </Auth>
     </Navbar>
   );
 };

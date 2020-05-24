@@ -1,14 +1,14 @@
 import { bindActionCreators } from 'redux';
 
 import { store } from '../store';
-import { tokenSetSuccess } from './creators';
-import { login, logout } from './thunks';
+
+import { fillStudentBindings, fillRoles, promoteUser } from './thunks';
 
 export default bindActionCreators(
   {
-    tokenSetSuccess,
-    login,
-    logout,
+    fillStudentBindings,
+    fillRoles,
+    promoteUser,
   },
   store.dispatch,
 );

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { HashTable, HashToArray } from '../store/types';
-import { Student } from '../store/ais/student/types';
-import { useSelector } from '../store/store';
+import { HashTable, HashToArray } from '../../store/types';
+import { Student } from '../../store/ais/student/types';
+import { useSelector } from '../../store/store';
 
 interface StudentTableProps {
   students: HashTable<Student>;

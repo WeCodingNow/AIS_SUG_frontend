@@ -6,12 +6,20 @@ interface ApiConfig {
   cors?: boolean;
 }
 
+const tokenKey = 'ais_api_token';
+
 export default class API {
   rootUrl: string;
   token?: string;
   requestParams?: RequestInit;
 
   constructor(apiConfig: ApiConfig) {
+    const token = window.localStorage.getItem(tokenKey);
+
+    if (token) {
+      this.setToken(token);
+    }
+
     this.rootUrl = `${apiConfig.host || '127.0.0.1'}:${apiConfig.port || 8080}`;
 
     this.requestParams = {
@@ -33,7 +41,15 @@ export default class API {
         ...this.requestParams.headers,
         Authorization: `Bearer ${this.token}`,
       };
+    } else {
+      this.requestParams = {
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+        },
+      };
     }
+
+    window.localStorage.setItem(tokenKey, token);
   }
 
   clearToken() {
