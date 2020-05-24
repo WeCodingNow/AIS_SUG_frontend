@@ -39,10 +39,12 @@ const Header: React.FC = () => {
             <LinkContainer to="university">
               <Nav.Link>Университет</Nav.Link>
             </LinkContainer>
-            <RBAC roleID={role?.id} allowed={[adminID, headmanID]}>
+            <RBAC roleID={role?.id} allowed={[adminID]}>
               <LinkContainer to="groups">
                 <Nav.Link>Группы</Nav.Link>
               </LinkContainer>
+            </RBAC>
+            <RBAC roleID={role?.id} allowed={[adminID, headmanID]}>
               <LinkContainer to="students">
                 <Nav.Link>Студенты</Nav.Link>
               </LinkContainer>

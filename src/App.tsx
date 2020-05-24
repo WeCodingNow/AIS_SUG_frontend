@@ -19,7 +19,7 @@ import auth from './store/auth/actions';
 import roleActions from './store/me/actions';
 
 import * as debug from './debug';
-import { studentID } from './roles';
+import { studentID, adminID } from './roles';
 
 const App: React.FC = () => {
   const isLogin = useSelector((state) => state.auth.loggedIn);
@@ -50,7 +50,7 @@ const App: React.FC = () => {
         <Route
           exact
           path="/groups"
-          component={() => (isLogin === LOGGED_IN && role?.id !== studentID ? <Groups /> : <Redirect to="/" />)}
+          component={() => (isLogin === LOGGED_IN && role?.id === adminID ? <Groups /> : <Redirect to="/" />)}
         />
         <Route
           exact
