@@ -7,6 +7,7 @@ import adminReducer from './admin/reducers';
 import { persistReducer } from 'redux-persist';
 
 import storage from 'redux-persist/lib/storage';
+import viewsReducer from './views/reducer';
 
 const authPersistConfig = {
   key: 'auth',
@@ -19,6 +20,7 @@ const reducer = combineReducers({
   ais: aisReducer,
   me: meReducer,
   admin: adminReducer,
+  view: viewsReducer,
 });
 
 export default reducer;

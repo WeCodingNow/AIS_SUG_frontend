@@ -2,4 +2,14 @@
 
 .students-view {
   @include view;
+
+  .selected-discipline {
+    background-color: black;
+    color: white;
+  }
+
+  .selected-student {
+    background-color: black;
+    color: white;
+  }
 }

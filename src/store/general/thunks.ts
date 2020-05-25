@@ -26,21 +26,25 @@ export function makeGetters<T extends Action>(entityEndpoint: EntityEndpoint) {
   return { getOne, getAll };
 }
 
-export function makePutters<T extends Action>(
+export function makePutters<M, T extends Action>(
   putActionCreator: (a: any) => T,
   loadingStateCreator: ChangeLoadingStateCreator<T>,
-  modelTransformer: (a: any) => any,
+  modelTransformer: (a: any) => M,
   funcs: ReturnType<typeof makeGetters>,
 ) {
-  const putOne = (id: number): ThunkResult<void, T> => async (dispatch) => {
+  const putOne = (id: number): ThunkResult<Promise<M>, T> => async (dispatch) => {
     try {
       dispatch(loadingStateCreator(LOADING));
       const entity = await dispatch(funcs.getOne(id));
+
       dispatch(putActionCreator(modelTransformer(entity)));
       dispatch(loadingStateCreator(SUCCESS));
+
+      return Promise.resolve(modelTransformer(entity));
     } catch (e) {
       console.log(e);
       dispatch(loadingStateCreator(FAILED));
+      return Promise.reject();
     }
   };
 

@@ -1,6 +1,6 @@
 import { putRole, putInfo } from './creators';
 import { ThunkAction } from 'redux-thunk';
-import { MeActionTypes, toRole, toInfo } from './types';
+import { MeActionTypes, toRole, toInfo, Info } from './types';
 
 import AisAPI from '../../services/ais';
 import { State } from '../store';
@@ -34,11 +34,14 @@ export const getInfo = (): ThunkResult<Promise<any>> => async () => {
   }
 };
 
-export const fillInfo = (): ThunkResult<void> => async (dispatch) => {
+export const fillInfo = (): ThunkResult<Promise<Info>> => async (dispatch) => {
   try {
     const info = await dispatch(getInfo());
     dispatch(putInfo(toInfo(info)));
+
+    return Promise.resolve(toInfo(info));
   } catch (e) {
     console.log(e);
+    return Promise.reject();
   }
 };
