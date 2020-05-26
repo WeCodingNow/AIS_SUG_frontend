@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { shallowEqual } from 'react-redux';
 
 import { useSelector } from '../../store/store';
@@ -8,6 +8,7 @@ import { SUCCESS } from '../../store/loading/types';
 
 import AdminStudentTable from '../../components/AdminStudentTable';
 import AdminUserTable from '../../components/AdminUserTable';
+import AddEntity from '../../components/AddEntity';
 
 const AdminStudents: React.FC = () => {
   const aisState = useSelector(
@@ -22,11 +23,19 @@ const AdminStudents: React.FC = () => {
     shallowEqual,
   );
 
+  const [showModal, setShowModal] = useState(false);
+
   const tokenSet = useSelector((state) => state.auth.tokenSet);
 
   useEffect(() => {
     if (tokenSet) {
       ais.cathedra.fillAll();
+      ais.residence.fillAll();
+      ais.controlEvent.fillAll();
+      ais.controlEventType.fillAll();
+      ais.discipline.fillAll();
+      ais.mark.fillAll();
+      ais.backlog.fillAll();
       ais.student.fillAll();
       ais.group.fillAll();
       ais.semester.fillAll();
@@ -52,6 +61,14 @@ const AdminStudents: React.FC = () => {
             ) : (
               <div>LOADING</div>
             )}
+            <button
+              className="btn btn-success"
+              onClick={() => {
+                setShowModal(true);
+              }}
+            >
+              Добавить...
+            </button>
             <div>Студенты</div>
             {aisState.students.loading === SUCCESS &&
             aisState.groups.loading === SUCCESS &&
@@ -69,6 +86,12 @@ const AdminStudents: React.FC = () => {
           </div>
         </div>
       </div>
+      <AddEntity
+        show={showModal}
+        closeCallback={() => {
+          setShowModal(false);
+        }}
+      />
     </div>
   );
 };

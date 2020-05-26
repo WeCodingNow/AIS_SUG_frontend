@@ -1,8 +1,8 @@
 import { putMark, changeMarkLoadingState } from './creators';
 
 import AisAPI from '../../../services/ais';
-import { makeGetters, makePutters } from '../../general/thunks';
-import { toMark } from './types';
+import { makeGetters, makePutters, makeCreator } from '../../general/thunks';
+import { toMark, toBackMark } from './types';
 
 const { getOne, getAll } = makeGetters(AisAPI.Mark);
 const { putOne, putAll } = makePutters(putMark, changeMarkLoadingState, toMark, {
@@ -10,4 +10,6 @@ const { putOne, putAll } = makePutters(putMark, changeMarkLoadingState, toMark, 
   getAll,
 });
 
-export { getOne as getMark, getAll as getMarks, putOne as fillMark, putAll as fillMarks };
+const create = makeCreator(AisAPI.Mark, putMark, toMark, toBackMark);
+
+export { getOne as getMark, getAll as getMarks, putOne as fillMark, putAll as fillMarks, create as createMark };

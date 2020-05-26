@@ -9,7 +9,7 @@ import { Residence } from '../store/ais/residence/types';
 import { Contact } from '../store/ais/contact/types';
 
 export const HeadmanStudentTable: React.FC = () => {
-  const viewState = useSelector((st) => st.view.headman);
+  const viewState = useSelector((st) => st.view.headman.students);
   const students = useSelector((st) => st.ais.student.byID, shallowEqual);
   const residences = useSelector((st) => st.ais.residence.byID, shallowEqual);
   const contacts = useSelector((st) => st.ais.contact.byID, shallowEqual);

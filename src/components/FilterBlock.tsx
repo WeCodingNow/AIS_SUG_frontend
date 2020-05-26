@@ -4,7 +4,7 @@ import { useSelector } from '../store/store';
 import view from '../store/views/headman/actions';
 
 export const FilterBlock: React.FC = () => {
-  const filters = useSelector((st) => st.view.headman.filters);
+  const filters = useSelector((st) => st.view.headman.students.filters);
 
   return (
     <div className="btn-group" role="group" aria-label="Basic example">

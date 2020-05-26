@@ -17,18 +17,18 @@ interface AverageMarks {
 
 export const HeadmanStudentDiscipline: React.FC = () => {
   const viewState = useSelector((st) => st.view.headman);
-  const selectedStudent = viewState.selection.student;
+  const selectedStudent = viewState.students.selection.student;
   const disciplines = useSelector((st) => st.ais.discipline.byID);
   const marks = useSelector((st) => st.ais.mark.byID);
   const controlEvents = useSelector((st) => st.ais.controlEvent.byID);
 
   const displayedDisciplines = HashToArray(disciplines)
-    .filter((d) => d.semesters.filter((semID) => semID === viewState.selection.semester?.id ?? 0).length > 0)
+    .filter((d) => d.semesters.filter((semID) => semID === viewState.students.selection.semester?.id ?? 0).length > 0)
     .sort((lhs, rhs) => (lhs.name[0] > rhs.name[0] ? 1 : lhs.name[0] === rhs.name[0] ? 0 : -1));
 
   // const displayedMarks = (selectedStudent?.markIDs.map((mID) => marks[mID]) ?? []).filter((m) =>
-  //   viewState.selection.discipline
-  //     ? controlEvents[m.controlEventID].disciplineID === viewState.selection.discipline.id
+  //   viewState.students.selection.discipline
+  //     ? controlEvents[m.controlEventID].disciplineID === viewState.students.selection.discipline?.id
   //     : true,
   // );
 
@@ -60,7 +60,9 @@ export const HeadmanStudentDiscipline: React.FC = () => {
         {displayedDisciplines.map((d) => (
           <tr
             className={
-              viewState.selection.discipline && viewState.selection.discipline.id === d.id ? 'selected-discipline' : ''
+              viewState.students.selection.discipline && viewState.students.selection.discipline.id === d.id
+                ? 'selected-discipline'
+                : ''
             }
             key={d.id}
             onClick={() => {

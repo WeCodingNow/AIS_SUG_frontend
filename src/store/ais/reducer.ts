@@ -11,6 +11,7 @@ import contactTypeReducer from './contact_type/reducers';
 import residenceReducer from './residence/reducers';
 import disciplineReducer from './discipline/reducers';
 import markReducer from './mark/reducers';
+import backlogReducer from './backlog/reducers';
 
 const reducer = combineReducers({
   cathedra: cathedraReducer,
@@ -24,6 +25,7 @@ const reducer = combineReducers({
   residence: residenceReducer,
   discipline: disciplineReducer,
   mark: markReducer,
+  backlog: backlogReducer,
 });
 
 export default reducer;

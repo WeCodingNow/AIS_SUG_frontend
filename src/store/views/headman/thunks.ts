@@ -22,6 +22,7 @@ import { fillResidence } from '../../ais/residence/thunks';
 import { fillContact } from '../../ais/contact/thunks';
 import { fillContactType } from '../../ais/contact_type/thunks';
 import { fillControlEventType } from '../../ais/control_event_type/thunks';
+import { fillBacklog } from '../../ais/backlog/thunks';
 
 type ThunkResult<R> = ThunkAction<R, State, undefined, HeadmanViewsActions>;
 
@@ -82,6 +83,7 @@ export const loadOwnGroup = (): ThunkResult<void> => async (dispatch) => {
       ownGroup.studentIDs.map(async (studID) => {
         const student = await dispatch(fillStudent(studID));
         await Promise.all(student.markIDs.map(async (mID) => await dispatch(fillMark(mID))));
+        await Promise.all(student.backlogIDs.map(async (bID) => await dispatch(fillBacklog(bID))));
 
         await dispatch(fillResidence(student.residenceID));
 

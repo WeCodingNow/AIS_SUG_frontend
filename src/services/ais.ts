@@ -70,6 +70,10 @@ class AisAPI extends API {
   get StudentBindings() {
     return this.makeEntityEndpoint('student_users');
   }
+
+  get Backlog() {
+    return this.makeEntityEndpoint('backlog');
+  }
 }
 
 export default new AisAPI(Config.api.ais);

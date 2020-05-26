@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import { Action } from 'redux';
 import { Model, ModelState, ChangeAction } from '../../types';
 import { Loadable, LoadingAction } from '../../loading/types';
@@ -11,6 +12,7 @@ export interface PureStudent {
   residenceID: number;
   contactIDs: Array<number>;
   markIDs: Array<number>;
+  backlogIDs: Array<number>;
 }
 
 export interface Student extends Model, PureStudent {}
@@ -25,6 +27,16 @@ export const toStudent = (data: any): Student => ({
   residenceID: data['residence']['id'],
   contactIDs: data['contacts'].map((co: any) => co['id']),
   markIDs: data['marks'].map((m: any) => m['id']),
+  backlogIDs: data['backlogs'].map((b: any) => b['id']),
+});
+
+export const toBackStudent = (st: PureStudent) => ({
+  first_name: st.name,
+  second_name: st.secondName,
+  third_name: st.thirdName,
+
+  group_id: st.groupID,
+  residence_id: st.residenceID,
 });
 
 export interface StudentState extends ModelState<Student>, Loadable {}

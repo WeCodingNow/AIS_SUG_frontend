@@ -28,6 +28,7 @@ const University: React.FC = () => {
       discipline: s.ais.discipline,
       controlEvent: s.ais.controlEvent,
       marks: s.ais.mark,
+      backlog: s.ais.backlog,
     }),
     shallowEqual,
   );
@@ -46,6 +47,7 @@ const University: React.FC = () => {
       await ais.discipline.fillAll();
       await ais.controlEvent.fillAll();
       await ais.mark.fillAll();
+      await ais.backlog.fillAll();
     })();
   }, []);
 
@@ -66,6 +68,7 @@ const University: React.FC = () => {
     state.discipline.loading !== SUCCESS ||
     state.group.loading !== SUCCESS ||
     state.marks.loading !== SUCCESS ||
+    state.backlog.loading !== SUCCESS ||
     state.semester.loading !== SUCCESS
   ) {
     return <div>Загрука информации о студенте...</div>;
@@ -164,6 +167,26 @@ const University: React.FC = () => {
             .filter((m) => m)}
           disciplineID={selectedDisciplineID}
         />
+      </div>
+      <div className="row">
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">Дисциплина</th>
+              <th scope="col">Задолженность</th>
+            </tr>
+          </thead>
+          <tbody>
+            {HashToArray(state.backlog.byID)
+              .filter((b) => (selectedDisciplineID ? b.disciplineID === selectedDisciplineID : true))
+              .map((b) => (
+                <tr key={b.id}>
+                  <th>{state.discipline.byID[b.disciplineID].name}</th>
+                  <th>{b.desc}</th>
+                </tr>
+              ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

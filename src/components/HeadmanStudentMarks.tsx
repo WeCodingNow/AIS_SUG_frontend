@@ -4,7 +4,7 @@ import { useSelector } from '../store/store';
 // import { HashToArray } from '../store/types';
 
 export const HeadmanStudentMarks: React.FC = () => {
-  const viewState = useSelector((st) => st.view.headman);
+  const viewState = useSelector((st) => st.view.headman.students);
 
   const disciplines = useSelector((st) => st.ais.discipline.byID);
   const marks = useSelector((st) => st.ais.mark.byID);
@@ -23,8 +23,6 @@ export const HeadmanStudentMarks: React.FC = () => {
     .filter(
       (m) => selectedDiscipline === undefined || controlEvents[m.controlEventID].disciplineID === selectedDiscipline.id,
     );
-
-  // console.log(displayedMarks);
 
   return selectedStudent ? (
     <table className="table">

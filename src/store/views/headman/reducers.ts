@@ -1,18 +1,18 @@
 import {
   HeadmanViewsState,
   HeadmanViewsActions,
-  PUT_SELECTED_STUDENT,
-  PUT_SELECTED_STUDENT_DISCIPLINE,
-  DESELECT_STUDENT,
-  DESELECT_STUDENT_DISCIPLINE,
-  DESELECT_SEMESTER,
-  PUT_SELECTED_SEMESTER,
-  PUT_OWN_GROUP,
-  START_LOADING_OWN_GROUP,
-  FINISHED_LOADING_OWN_GROUP,
-  FAIL_LOADING_OWN_GROUP,
-  APPLY_COMMUNITY_FILTER,
-  APPLY_MOSCOWITE_FILTER,
+  HEADMAN_PUT_SELECTED_STUDENT,
+  HEADMAN_PUT_SELECTED_DISCIPLINE,
+  HEADMAN_DESELECT_STUDENT,
+  HEADMAN_DESELECT_DISCIPLINE,
+  HEADMAN_DESELECT_SEMESTER,
+  HEADMAN_PUT_SELECTED_SEMESTER,
+  HEADMAN_PUT_GROUP,
+  HEADMAN_START_LOADING_GROUP,
+  HEADMAN_FINISHED_LOADING_GROUP,
+  HEADMAN_FAIL_LOADING_GROUP,
+  HEADMAN_APPLY_COMMUNITY_FILTER,
+  HEADMAN_APPLY_MOSCOWITE_FILTER,
 } from './types';
 import { GeneralAISActionType, CLEAR_AIS } from '../../types';
 import { FAILED, LOADING, SUCCESS } from '../../loading/types';
@@ -28,37 +28,37 @@ export default function headmanViewsReducer(
   action: HeadmanViewsActions | GeneralAISActionType,
 ): HeadmanViewsState {
   switch (action.type) {
-    case PUT_SELECTED_STUDENT:
+    case HEADMAN_PUT_SELECTED_STUDENT:
       return {
         ...state,
         selection: { ...state.selection, student: action.payload },
       };
-    case DESELECT_STUDENT:
+    case HEADMAN_DESELECT_STUDENT:
       return {
         ...state,
         selection: { ...state.selection, student: undefined },
       };
-    case PUT_SELECTED_SEMESTER:
+    case HEADMAN_PUT_SELECTED_SEMESTER:
       return {
         ...state,
         selection: { ...state.selection, semester: action.payload },
       };
-    case DESELECT_SEMESTER:
+    case HEADMAN_DESELECT_SEMESTER:
       return {
         ...state,
         selection: { ...state.selection, semester: undefined },
       };
-    case PUT_SELECTED_STUDENT_DISCIPLINE:
+    case HEADMAN_PUT_SELECTED_DISCIPLINE:
       return {
         ...state,
         selection: { ...state.selection, discipline: action.payload },
       };
-    case DESELECT_STUDENT_DISCIPLINE:
+    case HEADMAN_DESELECT_DISCIPLINE:
       return {
         ...state,
         selection: { ...state.selection, discipline: undefined },
       };
-    case PUT_OWN_GROUP:
+    case HEADMAN_PUT_GROUP:
       return {
         ...state,
         own: {
@@ -66,7 +66,7 @@ export default function headmanViewsReducer(
           group: action.payload,
         },
       };
-    case START_LOADING_OWN_GROUP:
+    case HEADMAN_START_LOADING_GROUP:
       return {
         ...state,
         own: {
@@ -74,7 +74,7 @@ export default function headmanViewsReducer(
           loading: LOADING,
         },
       };
-    case FINISHED_LOADING_OWN_GROUP:
+    case HEADMAN_FINISHED_LOADING_GROUP:
       return {
         ...state,
         own: {
@@ -82,7 +82,7 @@ export default function headmanViewsReducer(
           loading: SUCCESS,
         },
       };
-    case FAIL_LOADING_OWN_GROUP:
+    case HEADMAN_FAIL_LOADING_GROUP:
       return {
         ...state,
         own: {
@@ -90,7 +90,7 @@ export default function headmanViewsReducer(
           loading: FAILED,
         },
       };
-    case APPLY_MOSCOWITE_FILTER:
+    case HEADMAN_APPLY_MOSCOWITE_FILTER:
       return {
         ...state,
         filters: {
@@ -98,7 +98,7 @@ export default function headmanViewsReducer(
           isMoscowite: action.payload,
         },
       };
-    case APPLY_COMMUNITY_FILTER:
+    case HEADMAN_APPLY_COMMUNITY_FILTER:
       return {
         ...state,
         filters: {

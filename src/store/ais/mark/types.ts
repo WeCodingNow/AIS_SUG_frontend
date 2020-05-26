@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import { Action } from 'redux';
 import { Model, ModelState, ChangeAction } from '../../types';
 import { Loadable, LoadingAction } from '../../loading/types';
@@ -19,6 +20,13 @@ export const toMark = (data: any): Mark => ({
 
   controlEventID: data['control_event']['id'],
   studentID: data['student']['id'],
+});
+
+export const toBackMark = (m: PureMark) => ({
+  date: m.date,
+  value: m.value,
+  control_event_id: m.controlEventID,
+  student_id: m.studentID,
 });
 
 export interface MarkState extends ModelState<Mark>, Loadable {}

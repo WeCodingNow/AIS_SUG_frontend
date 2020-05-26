@@ -1,36 +1,31 @@
-import React, { useEffect } from 'react';
-import { useSelector } from '../store/store';
-import { shallowEqual } from 'react-redux';
+// import React, { useEffect } from 'react';
+import React from 'react';
+// import { useSelector } from '../store/store';
+// import { shallowEqual } from 'react-redux';
 import Dropdown from 'react-bootstrap/Dropdown';
 
-import view from '../store/views/headman/actions';
+// import view from '../store/views/headman/actions';
+import { Semester } from '../store/ais/semester/types';
 
-export const SemesterChoice: React.FC = () => {
-  const viewState = useSelector((st) => st.view.headman.selection);
-  const myGroup = useSelector((st) => st.view.headman.own.group);
-  const semesters = useSelector((st) => st.ais.semester.byID, shallowEqual);
+interface SemesterChoiceProps {
+  selectedSemester?: Semester;
+  semesters: Array<Semester>;
+  callback: (sem: Semester) => void;
+}
 
-  const mySemesters = (myGroup?.semesterIDs ?? [])
-    .map((grID) => semesters[grID])
-    .sort((lhs, rhs) => (lhs.number < rhs.number ? 1 : lhs.number === rhs.number ? 0 : -1));
-
-  useEffect(() => {
-    view.putSelectedSemester(mySemesters[0]);
-  }, []);
-
+export const SemesterChoice: React.FC<SemesterChoiceProps> = ({ selectedSemester, semesters, callback }) => {
   return (
     <div>
       <Dropdown>
         <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-          {viewState.semester ? `Семестр ${viewState.semester.number}` : ''}
+          {selectedSemester ? `Семестр ${selectedSemester.number}` : ''}
         </Dropdown.Toggle>
         <Dropdown.Menu>
-          {mySemesters.map((sem) => (
+          {semesters.map((sem) => (
             <Dropdown.Item
               key={sem.id}
               onClick={() => {
-                view.putSelectedSemester(sem);
-                view.deselectStudentDiscipline();
+                callback(sem);
               }}
             >
               Семестр {`${sem.number}`}
