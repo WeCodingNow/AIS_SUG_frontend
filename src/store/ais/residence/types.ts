@@ -21,6 +21,12 @@ export const toResidence = (data: any): Residence => ({
   studentIDs: data['students'].map((s: any) => s['id']),
 });
 
+export const toBackResidence = (r: PureResidence) => ({
+  address: r.address,
+  city: r.city,
+  community: r.community,
+});
+
 export interface ResidenceState extends ModelState<Residence>, Loadable {}
 
 export const PUT_RESIDENCE = 'PUT_RESIDENCE';

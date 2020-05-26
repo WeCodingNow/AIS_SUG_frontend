@@ -1,17 +1,25 @@
-import React, { useEffect } from 'react';
+/* eslint-disable @typescript-eslint/camelcase */
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { useSelector } from '../store/store';
+import { useSelector, useThunkDispatch } from '../store/store';
 import { HashToArray, HashTable } from '../store/types';
 
 import { SUCCESS } from '../store/loading/types';
 import ais from '../store/ais/actions';
+
+import AisAPI from '../services/ais';
+import auth from '../store/auth/actions';
+
+// import { createResidence } from '../store/ais/residence/thunks';
 
 import './styles/register.scss';
 import { makeCurrentSemesterGetter } from '../utils/funcs';
 import { Group } from '../store/ais/group/types';
 import { Semester } from '../store/ais/semester/types';
 import { Cathedra } from '../store/ais/cathedra/types';
+import { shallowEqual } from 'react-redux';
+import { createResidence } from '../store/ais/residence/thunks';
 
 interface GroupsOptionsProps {
   groups: HashTable<Group>;
@@ -40,27 +48,65 @@ interface RegisterData {
   firstName: string;
   secondName: string;
   thirdName?: string;
-  groupID: number;
+  groupID: string;
+  residenceID: string;
+
+  newResidence: {
+    city: string;
+    address: string;
+  };
 }
 
 const validationRegexp = /^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$/.compile();
 const checkIsEmail = (email: string) => (email.match(validationRegexp) && true) || false;
 
+// const dispatch = useDddis
+
 const RegistrationForm: React.FC = () => {
   const form = useForm<RegisterData>({ reValidateMode: 'onSubmit', validateCriteriaMode: 'all' });
   const { register, handleSubmit, errors } = form;
-  const onSubmit = (data: RegisterData) => console.log(data);
+
+  const [isInCommunity, setIsInCommunity] = useState(true);
+
+  const dispatch = useThunkDispatch();
+  // const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log('getting this shit');
     ais.group.fillAll();
     ais.cathedra.fillAll();
     ais.semester.fillAll();
+    ais.residence.fillAll();
   }, []);
 
-  const groups = useSelector((s) => s.ais.group);
-  const semesters = useSelector((s) => s.ais.semester);
-  const cathedras = useSelector((s) => s.ais.cathedra);
+  const { groups, semesters, cathedras, residences } = useSelector(
+    (s) => ({ groups: s.ais.group, semesters: s.ais.semester, cathedras: s.ais.cathedra, residences: s.ais.residence }),
+    shallowEqual,
+  );
+
+  const communityResidences = HashToArray(residences.byID).filter((res) => res.community);
+
+  const onSubmit = async (data: RegisterData) => {
+    // const groupID
+    if (!isInCommunity) {
+      const newResidence = await dispatch(createResidence({ ...data.newResidence, community: false, studentIDs: [] }));
+
+      data.residenceID = newResidence.id.toString();
+    }
+
+    const resp = await AisAPI.Register.Post({
+      username: data.username,
+      password: data.password,
+      first_name: data.firstName,
+      second_name: data.secondName,
+      third_name: data.thirdName,
+      group_id: +data.groupID,
+      residence_id: +data.residenceID,
+    });
+
+    if (resp.status === 200) {
+      auth.login(data.username, data.password);
+    }
+  };
 
   return (
     <form className="register-form" onSubmit={handleSubmit(onSubmit)}>
@@ -85,7 +131,7 @@ const RegistrationForm: React.FC = () => {
         <div className="col">
           <label htmlFor="input-name">Группа</label>
           {(groups.loading === SUCCESS && semesters.loading === SUCCESS && cathedras.loading === SUCCESS && (
-            <select className="custom-select my-1 mr-sm-2" name="group-id" ref={register()}>
+            <select className="custom-select my-1 mr-sm-2" name="groupID" ref={register()}>
               <GroupsOptions groups={groups.byID} cathedras={cathedras.byID} semesters={semesters.byID} />
             </select>
           )) || <span>LOADING</span>}
@@ -93,6 +139,40 @@ const RegistrationForm: React.FC = () => {
           {errors.firstName && <div className="invalid-feedback">Выберите группу</div>}
         </div>
       </div>
+      <div className="form-row">
+        <label htmlFor="">Вы живёте в общежитии?</label>
+        <input
+          type="checkbox"
+          className="form-control"
+          checked={isInCommunity}
+          readOnly
+          onClick={() => {
+            setIsInCommunity(!isInCommunity);
+          }}
+        ></input>
+      </div>
+
+      {isInCommunity ? (
+        <div className="form-row">
+          <select className="custom-select my-1 mr-sm-2" name="residenceID" ref={register()}>
+            {communityResidences.map((res) => (
+              <option key={res.id} value={res.id}>{`${res.address}, г.${res.city}`}</option>
+            ))}
+          </select>
+        </div>
+      ) : (
+        <div className="form-row">
+          <div className="col-md-6 mb-3">
+            <label htmlFor="newResidence.address">Адрес</label>
+            <input className="form-control" name="newResidence.address" ref={register({ required: true })} />
+          </div>
+          <div className="col-md-6 mb-3">
+            <label htmlFor="newResidence.city">Город</label>
+            <input className="form-control" name="newResidence.city" ref={register({ required: true })} />
+          </div>
+        </div>
+      )}
+
       <div className="form-row">
         <div className="col-md-6 mb-3">
           <label htmlFor="input-name">Логин</label>
@@ -129,12 +209,9 @@ const Registration: React.FC = () => {
           <div className="text">Регистрация</div>
         </div>
       </div>
-      <div className="row content">
-        <div className="col-md-6 offset-md-2">
+      <div className="row justify-content-center content">
+        <div className="col-md-6">
           <RegistrationForm />
-        </div>
-        <div className="col">
-          <div>тут вставляем фотку студента</div>
         </div>
       </div>
     </div>

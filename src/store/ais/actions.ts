@@ -20,7 +20,7 @@ export default {
 
   mark: { fill: mark.fillMark, fillAll: mark.fillMarks },
 
-  residence: { fill: residence.fillResidence, fillAll: residence.fillResidences },
+  residence: { fill: residence.fillResidence, fillAll: residence.fillResidences, create: residence.createResidence },
   semester: { fill: semester.fillSemester, fillAll: semester.fillSemesters },
   student: { fill: student.fillStudent, fillAll: student.fillStudents },
   cathedra: { fill: cathedra.fillCathedra, fillAll: cathedra.fillCathedras },

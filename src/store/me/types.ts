@@ -19,11 +19,14 @@ export interface Info {
   userID: number;
 }
 
-export const toInfo = (data: any): Info => ({
-  studentID: data['student_id'],
-  userID: data['user_id'],
-  groupID: data['group_id'],
-});
+export const toInfo = (data: any): Info => {
+  console.log('in to info', data);
+  return {
+    studentID: data['student_id'],
+    userID: data['user_id'],
+    groupID: data['group_id'],
+  };
+};
 
 export interface MeState {
   role?: Role;

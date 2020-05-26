@@ -11,7 +11,7 @@ import auth from '../store/auth/actions';
 import RBAC from './RBAC';
 import Auth from './Auth';
 
-import { adminID, headmanID } from '../roles';
+import { adminID, headmanID, studentID } from '../roles';
 
 import * as debug from '../debug';
 
@@ -36,14 +36,16 @@ const Header: React.FC = () => {
       <Auth>
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <LinkContainer to="university">
-              <Nav.Link>Университет</Nav.Link>
-            </LinkContainer>
-            <RBAC roleID={role?.id} allowed={[adminID]}>
+            <RBAC roleID={role?.id} allowed={[studentID, headmanID]}>
+              <LinkContainer to="university">
+                <Nav.Link>Университет</Nav.Link>
+              </LinkContainer>
+            </RBAC>
+            {/* <RBAC roleID={role?.id} allowed={[adminID]}>
               <LinkContainer to="groups">
                 <Nav.Link>Группы</Nav.Link>
               </LinkContainer>
-            </RBAC>
+            </RBAC> */}
             <RBAC roleID={role?.id} allowed={[adminID, headmanID]}>
               <LinkContainer to="students">
                 <Nav.Link>Студенты</Nav.Link>

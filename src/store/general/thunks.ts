@@ -48,18 +48,44 @@ export function makePutters<M, T extends Action>(
     }
   };
 
-  const putAll = (): ThunkResult<void, T> => async (dispatch) => {
+  const putAll = (): ThunkResult<Promise<Array<M>>, T> => async (dispatch) => {
     try {
       dispatch(loadingStateCreator(LOADING));
-      const entities = await dispatch(funcs.getAll());
+      const entities: Array<any> = await dispatch(funcs.getAll());
 
-      entities.map((e: any) => dispatch(putActionCreator(modelTransformer(e))));
+      const models = entities.map(modelTransformer);
+
+      models.map(putActionCreator).forEach(dispatch);
+
       dispatch(loadingStateCreator(SUCCESS));
+
+      return Promise.resolve(models);
     } catch (e) {
       console.log(e);
       dispatch(loadingStateCreator(FAILED));
+      return Promise.reject();
     }
   };
 
   return { putOne, putAll };
+}
+
+export function makeCreator<PureM, M, T extends Action>(
+  entityEndpoint: EntityEndpoint,
+  putActionCreator: (a: any) => T,
+  modelTransformer: (a: any) => M,
+  toBackTransformer: (m: PureM) => any,
+) {
+  return (m: PureM): ThunkResult<Promise<M>, T> => async (dispatch) => {
+    try {
+      const respModel = await entityEndpoint.Post(toBackTransformer(m));
+      const newModel = modelTransformer(await respModel.json());
+
+      dispatch(putActionCreator(newModel));
+      return Promise.resolve(newModel);
+    } catch (e) {
+      console.log(e);
+      return Promise.reject();
+    }
+  };
 }

@@ -4,7 +4,9 @@ import { store } from '../../store';
 
 import {
   deselectStudent,
+  putSelectedSemester,
   deselectSemester,
+  selectStudentDiscipline,
   deselectStudentDiscipline,
   applyMoscowiteFilter,
   applyCommunityFilter,
@@ -14,7 +16,9 @@ import { loadOwnGroup, selectStudent } from './thunks';
 export default bindActionCreators(
   {
     deselectStudent,
+    putSelectedSemester,
     deselectSemester,
+    selectStudentDiscipline,
     deselectStudentDiscipline,
     loadOwnGroup,
     selectStudent,

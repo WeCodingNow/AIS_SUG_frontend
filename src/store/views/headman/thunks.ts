@@ -19,6 +19,9 @@ import { fillDiscipline } from '../../ais/discipline/thunks';
 import { fillControlEvent } from '../../ais/control_event/thunks';
 import { fillCathedra } from '../../ais/cathedra/thunks';
 import { fillResidence } from '../../ais/residence/thunks';
+import { fillContact } from '../../ais/contact/thunks';
+import { fillContactType } from '../../ais/contact_type/thunks';
+import { fillControlEventType } from '../../ais/control_event_type/thunks';
 
 type ThunkResult<R> = ThunkAction<R, State, undefined, HeadmanViewsActions>;
 
@@ -31,7 +34,17 @@ export const selectStudent = (studentID: number): ThunkResult<void> => async (di
   }
 };
 
+const maxRefreshes = 5;
+let refreshCounter = maxRefreshes;
+
 export const loadOwnGroup = (): ThunkResult<void> => async (dispatch) => {
+  if (refreshCounter !== maxRefreshes) {
+    refreshCounter++;
+    return;
+  }
+
+  refreshCounter = 0;
+
   try {
     dispatch(startLoadingOwnGroup());
     const info = await dispatch(fillInfo());
@@ -56,7 +69,8 @@ export const loadOwnGroup = (): ThunkResult<void> => async (dispatch) => {
 
         await Promise.all(
           semester.controlEventIDs.map(async (ceID) => {
-            await dispatch(fillControlEvent(ceID));
+            const controlEvent = await dispatch(fillControlEvent(ceID));
+            await dispatch(fillControlEventType(controlEvent.typeID));
           }),
         );
       }),
@@ -70,6 +84,14 @@ export const loadOwnGroup = (): ThunkResult<void> => async (dispatch) => {
         await Promise.all(student.markIDs.map(async (mID) => await dispatch(fillMark(mID))));
 
         await dispatch(fillResidence(student.residenceID));
+
+        await Promise.all(
+          student.contactIDs.map(async (cID) => {
+            const contact = await dispatch(fillContact(cID));
+            console.log('tryna fill contact type', contact.typeID);
+            await dispatch(fillContactType(contact.typeID));
+          }),
+        );
       }),
     );
 

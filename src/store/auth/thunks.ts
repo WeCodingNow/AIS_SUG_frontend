@@ -9,6 +9,7 @@ import { MeActionTypes, toRole, toInfo } from '../me/types';
 import { clearMe, putRole, putInfo } from '../me/creators';
 import { clearAIS } from '../creators';
 import { GeneralAISActionType } from '../types';
+import { adminID } from '../../roles';
 
 type ThunkResult<R> = ThunkAction<R, State, undefined, AuthActionTypes | MeActionTypes | GeneralAISActionType>;
 
@@ -22,10 +23,15 @@ export const login = (username: string, password: string): ThunkResult<void> => 
         const token = (await resp.json()).token;
 
         const roleResp = await AisAPI.Role.withAuth('Bearer', token).Get();
-        const infoResp = await AisAPI.Info.withAuth('Bearer', token).Get();
 
-        dispatch(putRole(toRole(await roleResp.json())));
-        dispatch(putInfo(toInfo(await infoResp.json())));
+        const role = toRole(await roleResp.json());
+
+        if (role.id !== adminID) {
+          const infoResp = await AisAPI.Info.withAuth('Bearer', token).Get();
+          dispatch(putInfo(toInfo(await infoResp.json())));
+        }
+
+        dispatch(putRole(role));
 
         dispatch(loginSuccess(token));
       } else {

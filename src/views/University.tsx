@@ -14,6 +14,7 @@ import { AvgMarkObj, DisciplinesTable } from '../components/DisciplinesTable';
 import { MarksTable } from '../components/MarksTable';
 
 import './styles/university.scss';
+import { SUCCESS } from '../store/loading/types';
 
 const University: React.FC = () => {
   const [selectedSemesterID, setSelectedSemesterID] = useState(0);
@@ -39,11 +40,13 @@ const University: React.FC = () => {
   }, [me.info]);
 
   useEffect(() => {
-    ais.group.fillAll();
-    ais.semester.fillAll();
-    ais.discipline.fillAll();
-    ais.controlEvent.fillAll();
-    ais.mark.fillAll();
+    (async () => {
+      await ais.group.fillAll();
+      await ais.semester.fillAll();
+      await ais.discipline.fillAll();
+      await ais.controlEvent.fillAll();
+      await ais.mark.fillAll();
+    })();
   }, []);
 
   const lastSemester = me?.info?.groupID
@@ -57,6 +60,16 @@ const University: React.FC = () => {
       setSelectedSemesterID(lastSemester.id);
     }
   }, [lastSemester]);
+
+  if (
+    state.controlEvent.loading !== SUCCESS ||
+    state.discipline.loading !== SUCCESS ||
+    state.group.loading !== SUCCESS ||
+    state.marks.loading !== SUCCESS ||
+    state.semester.loading !== SUCCESS
+  ) {
+    return <div>Загрука информации о студенте...</div>;
+  }
 
   const disciplinesInSemester: HashTable<Discipline> = HashToArray(state.discipline.byID)
     .filter((d) => d.semesters.filter((sid) => sid === selectedSemesterID).length > 0)

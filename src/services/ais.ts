@@ -3,6 +3,10 @@ import Config from '../config.json';
 import API from './api';
 
 class AisAPI extends API {
+  get Register() {
+    return this.makeEntityEndpoint('register');
+  }
+
   get Contact() {
     return this.makeEntityEndpoint('contact');
   }
