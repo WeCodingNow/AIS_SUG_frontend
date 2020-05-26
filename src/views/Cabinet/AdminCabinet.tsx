@@ -1,7 +1,7 @@
 import React from 'react';
 
 const AdminCabinet: React.FC = () => {
-  return <div>here be admin cabinet</div>;
+  return <div>Личный кабинет администратора</div>;
 };
 
 export default AdminCabinet;

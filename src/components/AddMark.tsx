@@ -52,6 +52,7 @@ const AddMark: React.FC<AddMarkProps> = ({ closeCallback }) => {
         studentID: +data.studentID,
         date: new Date(),
       });
+      await ais.controlEvent.fillAll();
       closeCallback();
     } catch (e) {
       console.log(e);

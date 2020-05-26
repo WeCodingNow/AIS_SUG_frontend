@@ -20,7 +20,7 @@ import { FAILED, LOADING, SUCCESS } from '../../loading/types';
 const initialState: HeadmanViewsState = {
   selection: {},
   own: { loading: FAILED },
-  filters: { isInCommunity: false, isMoscowite: true },
+  filters: { isInCommunity: false, isMoscowite: false },
 };
 
 export default function headmanViewsReducer(
